@@ -1,0 +1,38 @@
+CREATE TABLE users (
+		user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+		uname TEXT NOT NULL,
+		passwd_hash TEXT NOT NULL,
+		email TEXT NOT NULL,
+		first_name TEXT NOT NULL,
+		last_name TEXT NOT NULL,
+		user_type TEXT 'approvalreq',
+		actions_left INTEGER '5',
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE books (
+		book_id INTEGER PRIMARY KEY AUTOINCREMENT,
+		title TEXT NOT NULL,
+		author TEXT NOT NULL,
+		year INTEGER NOT NULL,
+		genre TEXT NOT NULL,
+		isbn INTEGER NOT NULL,
+		readers INTEGER '0',
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE bookstate (
+		transaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
+		user_id INTEGER NOT NULL,
+		book_id INTEGER NOT NULL,
+		transaction_type NOT NULL,
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE reservation (
+		reservation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+		user_id INTEGER NOT NULL,
+		book_id INTEGER NOT NULL,
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
