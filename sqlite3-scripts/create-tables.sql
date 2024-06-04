@@ -5,8 +5,8 @@ CREATE TABLE users (
 		email TEXT NOT NULL,
 		first_name TEXT NOT NULL,
 		last_name TEXT NOT NULL,
-		user_type TEXT 'approvalreq',
-		actions_left INTEGER '5',
+		user_type TEXT 	DEFAULT 'approvalreq',
+		actions_left INTEGER DEFAULT '5',
 		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -18,7 +18,7 @@ CREATE TABLE books (
 		year INTEGER NOT NULL,
 		genre TEXT NOT NULL,
 		isbn INTEGER NOT NULL,
-		readers INTEGER '0',
+		readers INTEGER DEFAULT '0',
 		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
