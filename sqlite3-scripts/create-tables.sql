@@ -1,6 +1,6 @@
 CREATE TABLE users (
 		user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-		uname TEXT NOT NULL,
+		uname TEXT UNIQUE NOT NULL,
 		passwd_hash TEXT NOT NULL,
 		email TEXT NOT NULL,
 		first_name TEXT NOT NULL,
