@@ -1,17 +1,14 @@
 package main
 
 import (
-		"database/sql"
-		_ "github.com/mattn/go-sqlite3"
 		"fmt"
 		"log"
-)
+		"database/sql"
 
-type User struct {
-		uid int
-		uname string
-		email string
-}
+		"github.com/nimilgp/library-of-babel/pkg/models"
+
+		_ "github.com/mattn/go-sqlite3"
+)
 
 const file string = "lib-babel.db"
 const q string = `select user_id, uname, email from users;`
@@ -28,11 +25,11 @@ func main() {
 				log.Fatal(err)
 		}
 
-		var users []User
+		var users []models.User
 
 		for rows.Next() {
-				var u User
-				rows.Scan(&u.uid, &u.uname, &u.email)
+				var u models.User
+				rows.Scan(&u.User_id, &u.Uname, &u.Email)
 				users = append(users, u)
 		}
 		for _, u := range users {

@@ -1,10 +1,10 @@
 package models
 
 type User struct {
-		user_id int
-		uname string
+		User_id int
+		Uname string
 		passwd_hash string
-		email string
+		Email string
 		last_name string
 		user_type string
 		actions_left int
@@ -17,7 +17,7 @@ type Book struct {
 		author string
 		year int
 		genre string
-		isbn integer
+		isbn int
 		rating float32
 		readers int
 		quantity int
