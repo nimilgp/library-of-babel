@@ -1,14 +1,16 @@
-package models
+package main
 
 type User struct {
-		User_id int
-		Uname string
+		user_id int
+		uname string
 		passwd_hash string
-		Email string
+		email string
+		first_name string
 		last_name string
 		user_type string
 		actions_left int
 		sqltime string
+		validity string
 }
 
 type Book struct {
@@ -22,6 +24,7 @@ type Book struct {
 		readers int
 		quantity int
 		sqltime string
+		validity string
 }
 
 type BookState struct {
@@ -30,6 +33,7 @@ type BookState struct {
 		book_id int
 		transaction_type string
 		sqltime string
+		validity string
 }
 
 type Reservation struct {
@@ -37,4 +41,5 @@ type Reservation struct {
 		user_id int
 		book_id int
 		sqltime string
+		validity string
 }
