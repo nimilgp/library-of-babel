@@ -7,7 +7,8 @@ CREATE TABLE users (
 		last_name TEXT NOT NULL,
 		user_type TEXT 	DEFAULT 'approvalreq',
 		actions_left INTEGER DEFAULT '5',
-		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		validity TEXT DEFAULT 'valid'
 );
 
 
@@ -21,20 +22,23 @@ CREATE TABLE books (
 		rating REAL DEFAULT '0',
 		readers INTEGER DEFAULT '0',
 		quantity INTEGER DEFAULT '1',
-		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		validity TEXT DEFAULT 'valid'
 );
 
-CREATE TABLE bookstate (
+CREATE TABLE transactions (
 		transaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
 		user_id INTEGER NOT NULL,
 		book_id INTEGER NOT NULL,
-		transaction_type NOT NULL,
-		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		transaction_type TEXT NOT NULL,
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		validity TEXT DEFAULT 'valid'
 );
 
-CREATE TABLE reservation (
+CREATE TABLE reservations (
 		reservation_id INTEGER PRIMARY KEY AUTOINCREMENT,
 		user_id INTEGER NOT NULL,
 		book_id INTEGER NOT NULL,
-		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		validity TEXT DEFAULT 'valid'
 );
