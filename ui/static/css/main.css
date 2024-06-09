@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+    background-color:#2e2459;
+    color:whitesmoke;
+    text-align: center;
+    padding:60px 0 60px 0;
+    font-size: 2rem;
+}
+
+footer a {
+    color:#0b7261;
+}
+
+.section-intro {
+    background-color: #0b7261;
+    color: whitesmoke;
+    padding: 60px;
+    font-size: 2rem;
+}
+
+.section-intro h1 {
+    font-family: 'Alfa Slab One';
+    font-size: 7rem;
+    letter-spacing: 4px;
+}
+
+.section-body {
+    padding: 60px;
+    font-size: 2rem;
+}
+
+header {
+    border-bottom: solid ;
+    position:sticky;
+    top: 0;
+    z-index: 999;
+    background-color: whitesmoke;
+    color: black;
+    padding: 30px 0 30px 0;
+    font-size: 2rem;
+}
+
+nav {
+    display: flex;
+    align-items: baseline;
+}
+
+#logo-name {
+    font-family: 'Alfa Slab One';
+    padding: 0 30px 0 60px;
+}
+
+#nav-options {
+    padding: 0 60px 0 30px;
+}
+
+#nav-options a {
+    padding: 0 10px 0 10px;
+}
