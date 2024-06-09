@@ -11,22 +11,24 @@
     <header>
         <nav>
             <div id="logo-name">
-                <a hx-get="/home" hx-target="#section-content" hx-swap="innerHTML">Library of Babel(logo-name)</a>
+                <a hx-get="/home" hx-target="#section-content" hx-swap="outerHTML">Library of Babel(logo-name)</a>
             </div>
             <ul id="nav-options">
-                <a hx-get="/browse" hx-target="#section-content" hx-swap="innerHTML">Browse</a> 
-                <a hx-get="/search" hx-target="#section-content" hx-swap="innerHTML">Search</a>
-                <a hx-get="/notice" hx-target="#section-content" hx-swap="innerHTML">Notice</a>
-                <a hx-get="/profile" hx-target="#section-content" hx-swap="innerHTML">Profile</a>
+                <a hx-get="/browse" hx-target="#section-content" hx-swap="outerHTML">Browse</a> 
+                <a hx-get="/search" hx-target="#section-content" hx-swap="outerHTML">Search</a>
+                <a hx-get="/notice" hx-target="#section-content" hx-swap="outerHTML">Notice</a>
+                <a hx-get="/profile" hx-target="#section-content" hx-swap="outerHTML">Profile</a>
             </ul>
         </nav> 
     </header>
     
-    <section id="section-content">
-        <h1>Welcome</h1>
-        <p>to the Library of Babel</p>
-        <p>An image or something</p>
-    </section>
+    <main id="section-content">
+        <section id="section-intro">
+            <h1>Welcome</h1>
+            <p>to the Library of Babel</p>
+            <p>An image or something</p>
+        </section>
+    </main>
 
     <footer>
         Powered by 
