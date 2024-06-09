@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+    <link rel="icon" href="/static/img/book-svgrepo-com.svg">
+    <title>Library of Babel</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div id="logo-name">
+                <a hx-get="/home" hx-target="#section-content" hx-swap="innerHTML">Library of Babel(logo-name)</a>
+            </div>
+            <ul id="nav-options">
+                <a hx-get="/browse" hx-target="#section-content" hx-swap="innerHTML">Browse</a> 
+                <a hx-get="/search" hx-target="#section-content" hx-swap="innerHTML">Search</a>
+                <a hx-get="/notice" hx-target="#section-content" hx-swap="innerHTML">Notice</a>
+                <a hx-get="/profile" hx-target="#section-content" hx-swap="innerHTML">Profile</a>
+            </ul>
+        </nav> 
+    </header>
+    
+    <section id="section-content">
+        <h1>Welcome</h1>
+        <p>to the Library of Babel</p>
+        <p>An image or something</p>
+    </section>
+
+    <footer>
+        Powered by 
+        <a id="htmx-link" href="https://htmx.org/">HTMX</a>
+        +
+        <a id="go-link" href="https://go.dev/">Go</a>
+        +
+        <a id="sqlite-link" href="https://sqlite.org/">SQLite</a>
+    </footer>
+
+</body>
+</html>
