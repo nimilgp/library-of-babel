@@ -27,11 +27,9 @@ func main() {
 		fmt.Println("no creation -- operations (add,remove librarian)")
 	} else { //create
 		if _, err := os.Stat(cfg.dbName); err == nil {
-			fmt.Println("Resources already exists!!!")
-			fmt.Printf("DELETE current resources and Create NEW??(y/N):")
-
+			cfg.resourcesExists()
 		} else {
-			createResources(cfg)
+			cfg.createResources()
 		}
 	}
 }

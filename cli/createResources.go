@@ -10,7 +10,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func createResources(cfg config) {
+func (cfg *config) createResources() {
 	fmt.Println("Creating Resorces...")
 	//db setup
 	db, err := sql.Open("sqlite3", cfg.dbName)
