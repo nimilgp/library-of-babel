@@ -6,7 +6,7 @@ import (
 	"text/template"
 )
 
-func getRoot(w http.ResponseWriter, r *http.Request) {
+func (app *application) getRoot(w http.ResponseWriter, r *http.Request) {
 	ts, err := template.ParseFiles("./ui/html/root.html")
 	if err != nil {
 		log.Print(err)
@@ -18,7 +18,7 @@ func getRoot(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getHome(w http.ResponseWriter, r *http.Request) {
+func (app *application) getHome(w http.ResponseWriter, r *http.Request) {
 	ts, err := template.ParseFiles("./ui/html/sections/home.html")
 	if err != nil {
 		log.Print(err)
@@ -30,7 +30,7 @@ func getHome(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getBrowse(w http.ResponseWriter, r *http.Request) {
+func (app *application) getBrowse(w http.ResponseWriter, r *http.Request) {
 	ts, err := template.ParseFiles("./ui/html/sections/browse.html")
 	if err != nil {
 		log.Print(err)
@@ -42,7 +42,7 @@ func getBrowse(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getSearch(w http.ResponseWriter, r *http.Request) {
+func (app *application) getSearch(w http.ResponseWriter, r *http.Request) {
 	ts, err := template.ParseFiles("./ui/html/sections/search.html")
 	if err != nil {
 		log.Print(err)
@@ -54,7 +54,7 @@ func getSearch(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getNotice(w http.ResponseWriter, r *http.Request) {
+func (app *application) getNotice(w http.ResponseWriter, r *http.Request) {
 	ts, err := template.ParseFiles("./ui/html/sections/notice.html")
 	if err != nil {
 		log.Print(err)
@@ -66,7 +66,7 @@ func getNotice(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getProfile(w http.ResponseWriter, r *http.Request) {
+func (app *application) getProfile(w http.ResponseWriter, r *http.Request) {
 	ts, err := template.ParseFiles("./ui/html/sections/profile.html")
 	if err != nil {
 		log.Print(err)

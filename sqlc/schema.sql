@@ -5,7 +5,7 @@ CREATE TABLE users (
 		email TEXT NOT NULL,
 		first_name TEXT NOT NULL,
 		last_name TEXT NOT NULL,
-		user_type TEXT 	DEFAULT 'approvalreq' NOT NULL,
+		user_type TEXT NOT NULL,
 		actions_left INTEGER DEFAULT '5' NOT NULL,
 		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 		validity TEXT DEFAULT 'valid' NOT NULL

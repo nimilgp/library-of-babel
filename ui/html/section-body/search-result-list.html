@@ -1,0 +1,10 @@
+<section class="section-body">
+    <ul class="list-items">
+        {{ range . }}
+            <li>
+                <h1>{{ .Title }}</h1>
+                <div>By {{ .Author}}</div>
+            </li>
+        {{end}}
+    </ul>
+</section>

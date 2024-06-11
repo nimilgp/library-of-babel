@@ -1,10 +1,16 @@
 <main class="section-content">
     <section class="section-intro">
         <h1>Search</h1>
+        <div class="search-options">
+            <a>Title</a>
+            <a>Author</a>
+            <a>ISBN</a>
+        </div>
+
         <div class="search-container">
-            <form hx-post="/search-book">
+            <form hx-post="/search-book" hx-target=".section-body" hx-swap="outerHTML">
               <input type="text" name="title" placeholder="Search..">
-              <button type="submit">Submit</button>
+              <button type="submit">Search</button>
             </form>
         </div>
     </section>

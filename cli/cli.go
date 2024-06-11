@@ -21,10 +21,16 @@ func main() {
 	flag.StringVar(&cfg.ipAdmin, "a", "admin", "Name of admin")
 	flag.StringVar(&cfg.ipPasswd, "p", "passwd", "Passwd of admin")
 	flag.Parse()
-	cfg.dbName = "temp.db" /////db name/////
+	cfg.dbName = "blablabla.db" /////db name/////
 
 	if !cfg.isCreate {
-		fmt.Println("no creation -- operations (add,remove librarian)")
+		if _, err := os.Stat(cfg.dbName); err == nil {
+			fmt.Println("no creation -- operations (add,remove librarian)")
+		} else {
+			fmt.Println("Resources Are Missing")
+			fmt.Println("Exiting...")
+		}
+
 	} else { //create
 		if _, err := os.Stat(cfg.dbName); err == nil {
 			cfg.resourcesExists()
