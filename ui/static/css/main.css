@@ -86,17 +86,6 @@ nav {
     border-bottom: solid;
 }
 
-.search-options {
-    margin: 20px 0;
-    display:flex;
-}
-
-.search-options a {
-    background-color:#2e2459;
-    padding: 10px 40px;
-    margin: 10px 30px 10px 0;
-}
-
 .search-container input {
     font-size: 2rem;
     padding: 10px 20px;
@@ -111,5 +100,22 @@ nav {
 
 input[type="radio"] {
     display:none;
+}
+
+.search-container .radio-buttons {
+    margin: 20px 0;
+    display:flex;
+}
+
+.search-container .radio-buttons label {
+    background-color:#2e2459;
+    padding: 10px 40px;
+    margin: 10px 30px 10px 0;
+}
+
+#search-type-selected {
+    border: solid;
+    font-size: 2rem;
+    padding: 10px 20px;
 }
   
