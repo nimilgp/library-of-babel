@@ -5,60 +5,31 @@ import (
 	"log"
 	"net/http"
 	"text/template"
+
+	"github.com/nimilgp/library-of-babel/dbLayer"
 )
 
 func (app *application) postSearchBook(w http.ResponseWriter, r *http.Request) {
 	searchStr := r.PostFormValue("search-str")
 	searchOpt := r.PostFormValue("search-option")
+	var books []dbLayer.Book
+	var err error
 	switch searchOpt {
 	case "title":
-		app.searchCaseTitle(w, searchStr)
+		books, err = app.queries.RetrieveBooksByTitleValue(app.ctx, sql.NullString{String: searchStr, Valid: true})
+		if err != nil {
+			log.Print(err)
+		}
 	case "author":
-		app.searchCaseAuthor(w, searchStr)
+		books, err = app.queries.RetrieveBooksByAuthorValue(app.ctx, sql.NullString{String: searchStr, Valid: true})
+		if err != nil {
+			log.Print(err)
+		}
 	case "isbn":
-		app.searchCaseISBN(w, searchStr)
-	}
-
-}
-
-func (app *application) searchCaseTitle(w http.ResponseWriter, searchStr string) {
-	books, err := app.queries.RetrieveBooksByTitleValue(app.ctx, sql.NullString{String: searchStr, Valid: true})
-	if err != nil {
-		log.Print(err)
-	}
-	ts, err := template.ParseFiles("./ui/html/section-body/search-result-list.html")
-
-	if err != nil {
-		log.Print(err)
-	}
-
-	err = ts.Execute(w, books)
-	if err != nil {
-		log.Print(err)
-	}
-}
-
-func (app *application) searchCaseAuthor(w http.ResponseWriter, searchStr string) {
-	books, err := app.queries.RetrieveBooksByAuthorValue(app.ctx, sql.NullString{String: searchStr, Valid: true})
-	if err != nil {
-		log.Print(err)
-	}
-
-	ts, err := template.ParseFiles("./ui/html/section-body/search-result-list.html")
-	if err != nil {
-		log.Print(err)
-	}
-
-	err = ts.Execute(w, books)
-	if err != nil {
-		log.Print(err)
-	}
-}
-
-func (app *application) searchCaseISBN(w http.ResponseWriter, searchStr string) {
-	books, err := app.queries.RetrieveBooksByISBN(app.ctx, searchStr)
-	if err != nil {
-		log.Print(err)
+		books, err = app.queries.RetrieveBooksByISBN(app.ctx, searchStr)
+		if err != nil {
+			log.Print(err)
+		}
 	}
 	ts, err := template.ParseFiles("./ui/html/section-body/search-result-list.html")
 	if err != nil {
