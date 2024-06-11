@@ -70,6 +70,6 @@ WHERE title LIKE '%'|| ? ||'%';
 SELECT * FROM books
 WHERE author LIKE '%'|| ? ||'%';
 
--- name: RetrieveBooksByISBN :one
+-- name: RetrieveBooksByISBN :many
 SELECT * FROM books
 WHERE isbn = ?;

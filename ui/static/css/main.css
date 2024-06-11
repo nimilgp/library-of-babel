@@ -108,3 +108,8 @@ nav {
     padding: 10px 20px;
 
 }
+
+input[type="radio"] {
+    display:none;
+}
+  
