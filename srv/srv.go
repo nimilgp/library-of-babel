@@ -44,6 +44,10 @@ func main() {
 	mux.HandleFunc("GET /search/{$}", app.getSearch)
 	mux.HandleFunc("GET /notice/{$}", app.getNotice)
 	mux.HandleFunc("GET /profile/{$}", app.getProfile)
+	//ui updations
+	mux.HandleFunc("GET /search-type-title", app.getSearchTypeTitle)
+	mux.HandleFunc("GET /search-type-author", app.getSearchTypeAuthor)
+	mux.HandleFunc("GET /search-type-isbn", app.getSearchTypeISBN)
 	//data routes
 	mux.HandleFunc("POST /search-book", app.postSearchBook)
 

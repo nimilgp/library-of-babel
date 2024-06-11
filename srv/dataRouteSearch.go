@@ -2,9 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"html/template"
 	"log"
 	"net/http"
-	"text/template"
 
 	"github.com/nimilgp/library-of-babel/dbLayer"
 )
