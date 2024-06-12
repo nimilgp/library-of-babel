@@ -41,3 +41,16 @@ func (app *application) postSearchBook(w http.ResponseWriter, r *http.Request) {
 		log.Print(err)
 	}
 }
+
+func (app *application) getSearchType(w http.ResponseWriter, r *http.Request) {
+	varType := r.PathValue("type")
+	ts, err := template.ParseFiles("./ui/html/section-intro/selection-type.html")
+	if err != nil {
+		log.Print(err)
+	}
+
+	err = ts.Execute(w, varType)
+	if err != nil {
+		log.Print(err)
+	}
+}

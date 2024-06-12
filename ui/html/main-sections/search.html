@@ -5,11 +5,11 @@
         <div class="search-container">
             <form hx-post="/search-book" hx-target=".section-body" hx-swap="outerHTML">
               <div hx-get="/empty-section-body" hx-target=".section-body" hx-swap="outerHTML" class="radio-buttons">
-                <input hx-get="/search-type-title" hx-target="#search-type-selected" hx-swap="outerHTML" hx-trigger="click" type="radio" id="title" name="search-option" value="title" checked="checked"/>
+                <input hx-get="/search-type/title" hx-target="#search-type-selected" hx-swap="immerHTML" hx-trigger="click" type="radio" id="title" name="search-option" value="title" checked="checked"/>
                 <label for="title">Title</label>
-                <input hx-get="/search-type-author" hx-target="#search-type-selected" hx-swap="outerHTML" hx-trigger="click" type="radio" id="author" name="search-option" value="author"/>
+                <input hx-get="/search-type/author" hx-target="#search-type-selected" hx-swap="innerHTML" hx-trigger="click" type="radio" id="author" name="search-option" value="author"/>
                 <label for="author">Author</label>
-                <input hx-get="/search-type-isbn" hx-target="#search-type-selected" hx-swap="outerHTML" hx-trigger="click" type="radio" id="isbn" name="search-option" value="isbn"/>
+                <input hx-get="/search-type/isbn" hx-target="#search-type-selected" hx-swap="innerHTML" hx-trigger="click" type="radio" id="isbn" name="search-option" value="isbn"/>
                 <label for="isbn">ISBN</label>
               </div>
               <input type="text" name="search-str" placeholder="Search..">
