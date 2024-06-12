@@ -1,7 +1,15 @@
 <main class="section-content">
     <section class="section-intro">
         <h1>Browse</h1>
-        <p>browse by: genre, popularity, ratings</p>
+        
+        <div class="search-container">
+            <form>
+              <div class="radio-buttons">
+                <label hx-get="/browse-popular" hx-target=".section-body" hx-swap="outerHTML">Popularity</label>
+                <label hx-get="/browse-rating" hx-target=".section-body" hx-swap="outerHTML">Ratings</label>
+              </div>
+            </form>
+        </div>
     </section>
     
     <section class="section-body">
