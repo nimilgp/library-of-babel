@@ -232,6 +232,86 @@ func (q *Queries) RetrieveBooksByISBN(ctx context.Context, isbn string) ([]Book,
 	return items, nil
 }
 
+const retrieveBooksByPopularity = `-- name: RetrieveBooksByPopularity :many
+SELECT book_id, title, author, year, genre, isbn, rating, readers, quantity, sqltime, validity FROM books 
+ORDER BY readers DESC
+`
+
+func (q *Queries) RetrieveBooksByPopularity(ctx context.Context) ([]Book, error) {
+	rows, err := q.db.QueryContext(ctx, retrieveBooksByPopularity)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Book
+	for rows.Next() {
+		var i Book
+		if err := rows.Scan(
+			&i.BookID,
+			&i.Title,
+			&i.Author,
+			&i.Year,
+			&i.Genre,
+			&i.Isbn,
+			&i.Rating,
+			&i.Readers,
+			&i.Quantity,
+			&i.Sqltime,
+			&i.Validity,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const retrieveBooksByRating = `-- name: RetrieveBooksByRating :many
+SELECT book_id, title, author, year, genre, isbn, rating, readers, quantity, sqltime, validity FROM books
+ORDER BY rating DESC
+`
+
+func (q *Queries) RetrieveBooksByRating(ctx context.Context) ([]Book, error) {
+	rows, err := q.db.QueryContext(ctx, retrieveBooksByRating)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Book
+	for rows.Next() {
+		var i Book
+		if err := rows.Scan(
+			&i.BookID,
+			&i.Title,
+			&i.Author,
+			&i.Year,
+			&i.Genre,
+			&i.Isbn,
+			&i.Rating,
+			&i.Readers,
+			&i.Quantity,
+			&i.Sqltime,
+			&i.Validity,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const retrieveBooksByTitleValue = `-- name: RetrieveBooksByTitleValue :many
 SELECT book_id, title, author, year, genre, isbn, rating, readers, quantity, sqltime, validity FROM books
 WHERE title LIKE '%'|| ? ||'%'
@@ -239,6 +319,47 @@ WHERE title LIKE '%'|| ? ||'%'
 
 func (q *Queries) RetrieveBooksByTitleValue(ctx context.Context, dollar_1 sql.NullString) ([]Book, error) {
 	rows, err := q.db.QueryContext(ctx, retrieveBooksByTitleValue, dollar_1)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Book
+	for rows.Next() {
+		var i Book
+		if err := rows.Scan(
+			&i.BookID,
+			&i.Title,
+			&i.Author,
+			&i.Year,
+			&i.Genre,
+			&i.Isbn,
+			&i.Rating,
+			&i.Readers,
+			&i.Quantity,
+			&i.Sqltime,
+			&i.Validity,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const retrieveBooksOfGenre = `-- name: RetrieveBooksOfGenre :many
+SELECT book_id, title, author, year, genre, isbn, rating, readers, quantity, sqltime, validity FROM books
+WHERE genre = ?
+ORDER BY rating DESC
+`
+
+func (q *Queries) RetrieveBooksOfGenre(ctx context.Context, genre string) ([]Book, error) {
+	rows, err := q.db.QueryContext(ctx, retrieveBooksOfGenre, genre)
 	if err != nil {
 		return nil, err
 	}

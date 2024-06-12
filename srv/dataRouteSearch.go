@@ -54,3 +54,35 @@ func (app *application) getSearchType(w http.ResponseWriter, r *http.Request) {
 		log.Print(err)
 	}
 }
+
+func (app *application) browsePopular(w http.ResponseWriter, r *http.Request) {
+	books, err := app.queries.RetrieveBooksByPopularity(app.ctx)
+	if err != nil {
+		log.Print(err)
+	}
+	ts, err := template.ParseFiles("./ui/html/section-body/search-result-list.html")
+	if err != nil {
+		log.Print(err)
+	}
+
+	err = ts.Execute(w, books)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+func (app *application) browseRating(w http.ResponseWriter, r *http.Request) {
+	books, err := app.queries.RetrieveBooksByRating(app.ctx)
+	if err != nil {
+		log.Print(err)
+	}
+	ts, err := template.ParseFiles("./ui/html/section-body/search-result-list.html")
+	if err != nil {
+		log.Print(err)
+	}
+
+	err = ts.Execute(w, books)
+	if err != nil {
+		log.Print(err)
+	}
+}

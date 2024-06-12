@@ -49,6 +49,8 @@ func main() {
 	mux.HandleFunc("GET /search-type/{type}", app.getSearchType)
 	//data routes
 	mux.HandleFunc("POST /search-book", app.postSearchBook)
+	mux.HandleFunc("GET /browse-popular", app.browsePopular)
+	mux.HandleFunc("GET /browse-rating", app.browseRating)
 
 	http.ListenAndServe(":3333", mux)
 }
