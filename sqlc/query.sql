@@ -73,3 +73,16 @@ WHERE author LIKE '%'|| ? ||'%';
 -- name: RetrieveBooksByISBN :many
 SELECT * FROM books
 WHERE isbn = ?;
+
+-- name: RetrieveBooksByPopularity :many
+SELECT * FROM books 
+ORDER BY readers DESC;
+
+-- name: RetrieveBooksByRating :many
+SELECT * FROM books
+ORDER BY rating DESC;
+
+-- name: RetrieveBooksOfGenre :many
+SELECT * FROM books
+WHERE genre = ?
+ORDER BY rating DESC;
