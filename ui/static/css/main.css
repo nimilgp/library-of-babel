@@ -104,6 +104,7 @@ input[type="radio"] {
 
 .search-container .radio-buttons {
     margin: 20px 0;
+    width:0%;
     display:flex;
 }
 
