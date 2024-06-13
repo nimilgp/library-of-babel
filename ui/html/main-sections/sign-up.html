@@ -1,14 +1,16 @@
 <main class="section-content">
     <section class="section-intro">
-        <h1>Sign In</h1>
+        <h1>Sign Up</h1>
 
-        <div class="sign-in-container">
-            <form hx-post="/sign-in">
+        <div class="sign-up-container">
+            <form hx-post="/sign-up">
                 <input type="text" name="uname" placeholder="Username" required>
                 <input type="password" name="passwd" placeholder="Password" required>
+                <input type="text" name="email" placeholder="Email" required>
+                <input type="text" name="fname" placeholder="First Name" required>
+                <input type="text" name="lname" placeholder="Last Name" required>
                 <button type="submit">Submit</button>
             </form>
         </div>
-        <label hx-get="/sign-up" hx-target=".section-content" id="sign-up-option">Sign Up for an Account</label>
     </section>
 </main>
