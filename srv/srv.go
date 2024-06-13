@@ -20,7 +20,7 @@ func main() {
 	var app application
 
 	//db setup
-	db, err := sql.Open("sqlite3", "babel.db") /////////////////////dataBase path name///////////////
+	db, err := sql.Open("sqlite3", "temp.db") /////////////////////dataBase path name///////////////
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -43,14 +43,17 @@ func main() {
 	mux.HandleFunc("GET /browse/{$}", app.getBrowse)
 	mux.HandleFunc("GET /search/{$}", app.getSearch)
 	mux.HandleFunc("GET /notice/{$}", app.getNotice)
-	mux.HandleFunc("GET /profile/{$}", app.getProfile)
+	mux.HandleFunc("GET /sign-in/{$}", app.getSignIn)
+	mux.HandleFunc("GET /sign-up/{$}", app.getSignUp)
 	//ui updations
 	mux.HandleFunc("GET /empty-section-body", app.getEmptySectionBody)
 	mux.HandleFunc("GET /search-type/{type}", app.getSearchType)
 	//data routes
 	mux.HandleFunc("POST /search-book", app.postSearchBook)
-	mux.HandleFunc("GET /browse-popular", app.browsePopular)
-	mux.HandleFunc("GET /browse-rating", app.browseRating)
-
+	mux.HandleFunc("GET /browse-popular", app.getBrowsePopular)
+	mux.HandleFunc("GET /browse-rating", app.getBrowseRating)
+	//action
+	mux.HandleFunc("POST /sign-in", app.postSignIn)
+	mux.HandleFunc("POST /sign-up", app.postSignUp)
 	http.ListenAndServe(":3333", mux)
 }

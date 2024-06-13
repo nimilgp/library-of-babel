@@ -66,8 +66,20 @@ func (app *application) getNotice(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application) getProfile(w http.ResponseWriter, r *http.Request) {
-	ts, err := template.ParseFiles("./ui/html/main-sections/profile.html")
+func (app *application) getSignIn(w http.ResponseWriter, r *http.Request) {
+	ts, err := template.ParseFiles("./ui/html/main-sections/sign-in.html")
+	if err != nil {
+		log.Print(err)
+	}
+
+	err = ts.Execute(w, nil)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+func (app *application) getSignUp(w http.ResponseWriter, r *http.Request) {
+	ts, err := template.ParseFiles("./ui/html/main-sections/sign-up.html")
 	if err != nil {
 		log.Print(err)
 	}
