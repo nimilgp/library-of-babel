@@ -72,6 +72,24 @@ func (q *Queries) CreateNewUser(ctx context.Context, arg CreateNewUserParams) er
 	return err
 }
 
+const createReservationForBook = `-- name: CreateReservationForBook :exec
+INSERT INTO reservations (
+	uname, book_id
+) VALUES (
+	?, ?
+)
+`
+
+type CreateReservationForBookParams struct {
+	Uname  string
+	BookID int64
+}
+
+func (q *Queries) CreateReservationForBook(ctx context.Context, arg CreateReservationForBookParams) error {
+	_, err := q.db.ExecContext(ctx, createReservationForBook, arg.Uname, arg.BookID)
+	return err
+}
+
 const createTableBooks = `-- name: CreateTableBooks :exec
 CREATE TABLE books (
 		book_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -90,6 +108,37 @@ CREATE TABLE books (
 
 func (q *Queries) CreateTableBooks(ctx context.Context) error {
 	_, err := q.db.ExecContext(ctx, createTableBooks)
+	return err
+}
+
+const createTableReservation = `-- name: CreateTableReservation :exec
+CREATE TABLE reservations (
+		reservation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+		uname TEXT NOT NULL,
+		title TEXT NOT NULL,
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+		validity TEXT DEFAULT 'valid' NOT NULL
+)
+`
+
+func (q *Queries) CreateTableReservation(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, createTableReservation)
+	return err
+}
+
+const createTableTransactions = `-- name: CreateTableTransactions :exec
+CREATE TABLE transactions (
+		transaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
+		uname TEXT NOT NULL,
+		book_id INTEGER NOT NULL,
+		transaction_type TEXT NOT NULL,
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+		validity TEXT DEFAULT 'valid' NOT NULL
+)
+`
+
+func (q *Queries) CreateTableTransactions(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, createTableTransactions)
 	return err
 }
 
@@ -150,6 +199,30 @@ func (q *Queries) RetrieveAllBooks(ctx context.Context) ([]Book, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const retrieveBookByBID = `-- name: RetrieveBookByBID :one
+SELECT book_id, title, author, year, genre, isbn, rating, readers, quantity, sqltime, validity FROM books
+WHERE book_id = ?
+`
+
+func (q *Queries) RetrieveBookByBID(ctx context.Context, bookID int64) (Book, error) {
+	row := q.db.QueryRowContext(ctx, retrieveBookByBID, bookID)
+	var i Book
+	err := row.Scan(
+		&i.BookID,
+		&i.Title,
+		&i.Author,
+		&i.Year,
+		&i.Genre,
+		&i.Isbn,
+		&i.Rating,
+		&i.Readers,
+		&i.Quantity,
+		&i.Sqltime,
+		&i.Validity,
+	)
+	return i, err
 }
 
 const retrieveBooksByAuthorValue = `-- name: RetrieveBooksByAuthorValue :many
@@ -393,13 +466,70 @@ func (q *Queries) RetrieveBooksOfGenre(ctx context.Context, genre string) ([]Boo
 	return items, nil
 }
 
-const retrieveUserByUID = `-- name: RetrieveUserByUID :one
-SELECT user_id, uname, passwd_hash, email, first_name, last_name, user_type, actions_left, sqltime, validity FROM users
-WHERE user_id = ? AND validity = 'valid'
+const retrievePsswdHash = `-- name: RetrievePsswdHash :one
+SELECT passwd_hash FROM users
+WHERE uname = ? AND validity = 'valid'
 `
 
-func (q *Queries) RetrieveUserByUID(ctx context.Context, userID int64) (User, error) {
-	row := q.db.QueryRowContext(ctx, retrieveUserByUID, userID)
+func (q *Queries) RetrievePsswdHash(ctx context.Context, uname string) (string, error) {
+	row := q.db.QueryRowContext(ctx, retrievePsswdHash, uname)
+	var passwd_hash string
+	err := row.Scan(&passwd_hash)
+	return passwd_hash, err
+}
+
+const retrieveReservedBooks = `-- name: RetrieveReservedBooks :many
+SELECT reservation_id, title, author, rating, reservations.book_id 
+FROM reservations,books
+WHERE reservations.uname = ? 
+AND reservations.validity = 'valid' 
+AND reservations.book_id = books.book_id
+`
+
+type RetrieveReservedBooksRow struct {
+	ReservationID int64
+	Title         string
+	Author        string
+	Rating        float64
+	BookID        int64
+}
+
+func (q *Queries) RetrieveReservedBooks(ctx context.Context, uname string) ([]RetrieveReservedBooksRow, error) {
+	rows, err := q.db.QueryContext(ctx, retrieveReservedBooks, uname)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []RetrieveReservedBooksRow
+	for rows.Next() {
+		var i RetrieveReservedBooksRow
+		if err := rows.Scan(
+			&i.ReservationID,
+			&i.Title,
+			&i.Author,
+			&i.Rating,
+			&i.BookID,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const retrieveUserByUName = `-- name: RetrieveUserByUName :one
+SELECT user_id, uname, passwd_hash, email, first_name, last_name, user_type, actions_left, sqltime, validity FROM users
+WHERE uname = ? AND validity = 'valid'
+`
+
+func (q *Queries) RetrieveUserByUName(ctx context.Context, uname string) (User, error) {
+	row := q.db.QueryRowContext(ctx, retrieveUserByUName, uname)
 	var i User
 	err := row.Scan(
 		&i.UserID,
@@ -453,6 +583,41 @@ func (q *Queries) RetrieveUsersByUType(ctx context.Context, userType string) ([]
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateBookQuantityDecrease = `-- name: UpdateBookQuantityDecrease :exec
+UPDATE books
+SET quantity = quantity - 1
+WHERE book_id = ?
+`
+
+func (q *Queries) UpdateBookQuantityDecrease(ctx context.Context, bookID int64) error {
+	_, err := q.db.ExecContext(ctx, updateBookQuantityDecrease, bookID)
+	return err
+}
+
+const updateBookQuantityIncrease = `-- name: UpdateBookQuantityIncrease :exec
+UPDATE books
+SET quantity = quantity + 1
+WHERE title = ?
+`
+
+func (q *Queries) UpdateBookQuantityIncrease(ctx context.Context, title string) error {
+	_, err := q.db.ExecContext(ctx, updateBookQuantityIncrease, title)
+	return err
+}
+
+const updateReservationValidity = `-- name: UpdateReservationValidity :exec
+;
+
+UPDATE reservations
+SET validity = 'invalid'
+WHERE reservation_id = ?
+`
+
+func (q *Queries) UpdateReservationValidity(ctx context.Context, reservationID int64) error {
+	_, err := q.db.ExecContext(ctx, updateReservationValidity, reservationID)
+	return err
 }
 
 const updateUserType = `-- name: UpdateUserType :exec

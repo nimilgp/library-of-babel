@@ -1,0 +1,49 @@
+
+<header>
+    <nav>
+        <ul id="logo-name">
+            <img hx-get="/home" hx-target=".section-content" hx-swap="outerHTML" src="/static/img/book-svgrepo-com.svg" width="50px">
+            <a hx-get="/home" hx-target=".section-content" hx-swap="outerHTML">Library of Babel</a>
+        </ul>
+        <ul id="nav-options">
+            <a hx-get="/browse" hx-target=".section-content" hx-swap="outerHTML">Browse</a> 
+            <a hx-get="/search" hx-target=".section-content" hx-swap="outerHTML">Search</a>
+            <a hx-get="/notice" hx-target=".section-content" hx-swap="outerHTML">Notice</a>
+            <a id="profile" hx-get="/profile" hx-target="body" hx-swap="innerHTML">Profile</a>
+        </ul>
+    </nav> 
+</header>
+
+<main class="section-content">
+    <section class="section-intro">
+        <h1>Profile</h1>
+        <div hx-get="/profile-sign-out" hx-target="#profile" hx-swap="outerHTML" >
+            <label id="sign-out-label" hx-get="/sign-out" hx-target="main">Sign Out</label>
+        </div>
+    </section>
+
+<section class="section-body">
+    <ul class="list-items">
+        {{ range . }}
+            <li id="list-item-{{.ReservationID}}">
+                <div class="book-details">
+                    <h1>{{ .Title }}</h1>
+                    <div>By {{ .Author}}</div>
+                </div>
+                <div class="cancel-reservation">
+                    <label hx-post="/cancel/{{.ReservationID}}/{{.Title}}" hx-target="#list-item-{{.ReservationID}}" hx-swap="outerHTML">Cancel</label>
+                </div>
+            </li>
+        {{end}}
+    </ul>
+</section>
+</main>
+
+<footer>
+    Powered by 
+    <a id="htmx-link" href="https://htmx.org/">HTMX</a>
+    +
+    <a id="go-link" href="https://go.dev/">GO</a>
+    +
+    <a id="sqlite-link" href="https://sqlite.org/">SQLite</a>
+</footer>

@@ -1,11 +1,34 @@
 <section class="section-body">
     <ul class="list-items">
-        {{ range . }}
-            <li>
-                <h1>{{ .Title }}</h1>
-                <div>By {{ .Author}}</div>
-                <div>Rating:<b>{{ .Rating }}</b> Readers:<b>{{ .Readers}}</b></div>
-            </li>
+        {{if .DisplayReserve}}
+            {{ range .Books }}
+                {{ if gt .Quantity 0}}
+                    <li id="list-item-{{.BookID}}">
+                        <div class="book-details">
+                            <h1>{{ .Title }}</h1>
+                            <div>By {{ .Author}}</div>
+                            <div>Rating:<b>{{ .Rating }}</b> Readers:<b>{{ .Readers}}</b></div>
+                            <div>Quantity:<b>{{.Quantity}}</b></div>
+                        </div>
+                        <div class="reserve-label">
+                            <label hx-post="/reserve/{{.BookID}}" hx-target="#list-item-{{.BookID}}" hx-swap="outerHTML">Reserve</label>
+                        </div>
+                    </li>
+                {{end}}
+            {{end}}
+        {{else}}
+                    {{ range .Books }}
+                        {{ if gt .Quantity 0}}
+                            <li id="list-item-{{.BookID}}">
+                                <div class="book-details">
+                                    <h1>{{ .Title }}</h1>
+                                    <div>By {{ .Author}}</div>
+                                    <div>Rating:<b>{{ .Rating }}</b> Readers:<b>{{ .Readers}}</b></div>
+                                    <div>Quantity:<b>{{.Quantity}}</b></div>
+                                </div>
+                            </li>
+                        {{end}}
+                    {{end}}
         {{end}}
     </ul>
 </section>

@@ -3,12 +3,12 @@
         <h1>Sign In</h1>
 
         <div class="sign-in-container">
-            <form hx-post="/sign-in">
+            <form hx-post="/sign-in" hx-target="body" hx-swap="innerHTML">
                 <input type="text" name="uname" placeholder="Username" required>
                 <input type="password" name="passwd" placeholder="Password" required>
                 <button type="submit">Submit</button>
             </form>
         </div>
-        <label hx-get="/sign-up" hx-target=".section-content" id="sign-up-option">Sign Up for an Account</label>
+        <label hx-get="/sign-up" hx-target=".section-content" hx-swap="outerHTML" id="sign-up-option">Sign Up for an Account</label>
     </section>
 </main>

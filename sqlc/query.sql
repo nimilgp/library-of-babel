@@ -27,6 +27,25 @@ CREATE TABLE books (
 		validity TEXT DEFAULT 'valid' NOT NULL
 );
 
+-- name: CreateTableTransactions :exec
+CREATE TABLE transactions (
+		transaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
+		uname TEXT NOT NULL,
+		book_id INTEGER NOT NULL,
+		transaction_type TEXT NOT NULL,
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+		validity TEXT DEFAULT 'valid' NOT NULL
+);
+
+-- name: CreateTableReservation :exec
+CREATE TABLE reservations (
+		reservation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+		uname TEXT NOT NULL,
+		title TEXT NOT NULL,
+		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+		validity TEXT DEFAULT 'valid' NOT NULL
+);
+
 -- name: CreateNewUser :exec
 INSERT INTO users (
   uname, passwd_hash, email, first_name, last_name, user_type
@@ -34,9 +53,13 @@ INSERT INTO users (
   ?, ?, ?, ?, ?, ?
 );
 
--- name: RetrieveUserByUID :one
+-- name: RetrieveUserByUName :one
 SELECT * FROM users
-WHERE user_id = ? AND validity = 'valid';
+WHERE uname = ? AND validity = 'valid';
+
+-- name: RetrievePsswdHash :one
+SELECT passwd_hash FROM users
+WHERE uname = ? AND validity = 'valid';
 
 -- name: RetrieveUsersByUType :many
 SELECT * FROM users
@@ -86,3 +109,36 @@ ORDER BY rating DESC;
 SELECT * FROM books
 WHERE genre = ?
 ORDER BY rating DESC;
+
+-- name: CreateReservationForBook :exec
+INSERT INTO reservations (
+	uname, book_id
+) VALUES (
+	?, ?
+);
+
+-- name: UpdateBookQuantityDecrease :exec
+UPDATE books
+SET quantity = quantity - 1
+WHERE book_id = ?;
+
+-- name: RetrieveReservedBooks :many
+SELECT reservation_id, title, author, rating, reservations.book_id 
+FROM reservations,books
+WHERE reservations.uname = ? 
+AND reservations.validity = 'valid' 
+AND reservations.book_id = books.book_id ;
+
+-- name: UpdateReservationValidity :exec
+UPDATE reservations
+SET validity = 'invalid'
+WHERE reservation_id = ?;
+
+-- name: UpdateBookQuantityIncrease :exec
+UPDATE books
+SET quantity = quantity + 1
+WHERE title = ?;
+
+-- name: RetrieveBookByBID :one
+SELECT * FROM books
+WHERE book_id = ?;

@@ -89,3 +89,37 @@ func (app *application) getSignUp(w http.ResponseWriter, r *http.Request) {
 		log.Print(err)
 	}
 }
+
+func (app *application) getProfile(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := r.Cookie("uname")
+	uname := cookie.Value
+	books, _ := app.queries.RetrieveReservedBooks(app.ctx, uname)
+	ts, err := template.ParseFiles("./ui/html/main-sections/profile.html")
+	if err != nil {
+		log.Print(err)
+	}
+	err = ts.Execute(w, books)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+func (app *application) getSignOut(w http.ResponseWriter, r *http.Request) {
+	cookie := http.Cookie{
+		Name:  "uname",
+		Value: "null",
+	}
+	http.SetCookie(w, &cookie)
+	ts, err := template.ParseFiles("./ui/html/main-sections/sign-in.html")
+	if err != nil {
+		log.Print(err)
+	}
+	err = ts.Execute(w, nil)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+func (app *application) getProfileSignOut(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte(string("<a id='profile' hx-get='/sign-in' hx-target='.section-content' hx-swap='outerHTML'>Profile</a>")))
+}

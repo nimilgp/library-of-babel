@@ -20,7 +20,7 @@ func main() {
 	var app application
 
 	//db setup
-	db, err := sql.Open("sqlite3", "temp.db") /////////////////////dataBase path name///////////////
+	db, err := sql.Open("sqlite3", "babel.db") /////////////////////dataBase path name///////////////
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,13 +45,18 @@ func main() {
 	mux.HandleFunc("GET /notice/{$}", app.getNotice)
 	mux.HandleFunc("GET /sign-in/{$}", app.getSignIn)
 	mux.HandleFunc("GET /sign-up/{$}", app.getSignUp)
+	mux.HandleFunc("GET /profile", app.getProfile)
+	mux.HandleFunc("GET /sign-out", app.getSignOut)
 	//ui updations
 	mux.HandleFunc("GET /empty-section-body", app.getEmptySectionBody)
 	mux.HandleFunc("GET /search-type/{type}", app.getSearchType)
+	mux.HandleFunc("GET /profile-sign-out", app.getProfileSignOut)
 	//data routes
 	mux.HandleFunc("POST /search-book", app.postSearchBook)
 	mux.HandleFunc("GET /browse-popular", app.getBrowsePopular)
 	mux.HandleFunc("GET /browse-rating", app.getBrowseRating)
+	mux.HandleFunc("POST /reserve/{BookID}", app.postReserveBook)
+	mux.HandleFunc("POST /cancel/{ReservationID}/{Title}", app.postCancelReservation)
 	//action
 	mux.HandleFunc("POST /sign-in", app.postSignIn)
 	mux.HandleFunc("POST /sign-up", app.postSignUp)

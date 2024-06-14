@@ -117,7 +117,7 @@ input[type="radio"] {
     display:flex;
 }
 
-.search-container .radio-buttons label {
+.search-container .radio-buttons label{
     background-color:#2e2459;
     padding: 10px 40px;
     margin: 10px 30px 10px 0;
@@ -127,10 +127,6 @@ input[type="radio"] {
     border: solid;
     font-size: 2rem;
     padding: 10px 20px;
-}
-
-#sign-up-option {
-    padding: 30px 20px;
 }
 
 .sign-up-container form{
@@ -153,4 +149,36 @@ input[type="radio"] {
     max-width: 540px;
     background-color: #2e2459;
     color: whitesmoke;
+}
+
+.reserve-label {
+    font-size: 2rem;
+    padding: 10px 20px;
+    background-color: #2e2459;
+    color: whitesmoke;
+    max-width: 150px;
+    text-align: center;
+} 
+
+#sign-out-label {
+    font-size: 2rem;
+    padding: 10px 20px;
+    background-color:#2e2459;
+}
+
+.cancel-reservation{
+    color: whitesmoke;
+    font-size: 2rem;
+    padding: 10px 20px;
+    background-color:#2e2459;
+    max-width: 150px;
+    text-align: center;
+}
+
+.red-zone {
+    font-family: 'Alfa Slab One';
+    font-size: 2rem;
+    background-color: #a72145;
+    color: whitesmoke;
+    padding: 10px 50px;
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+    <script src="/static/js/htmx.min.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Alfa Slab One' rel='stylesheet'>
     <link rel="icon" href="/static/img/book-svgrepo-com.svg">
     <link rel="stylesheet" href="/static/css/main.css">
@@ -20,7 +20,7 @@
                 <a hx-get="/browse" hx-target=".section-content" hx-swap="outerHTML">Browse</a> 
                 <a hx-get="/search" hx-target=".section-content" hx-swap="outerHTML">Search</a>
                 <a hx-get="/notice" hx-target=".section-content" hx-swap="outerHTML">Notice</a>
-                <a hx-get="/sign-in" hx-target=".section-content" hx-swap="outerHTML">Sign In</a>
+                <a id="profile" hx-get="/sign-in" hx-target=".section-content" hx-swap="outerHTML">Profile</a>
             </ul>
         </nav> 
     </header>

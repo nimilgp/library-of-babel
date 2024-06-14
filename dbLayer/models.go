@@ -22,6 +22,23 @@ type Book struct {
 	Validity string
 }
 
+type Reservation struct {
+	ReservationID int64
+	Uname         string
+	BookID        int64
+	Sqltime       time.Time
+	Validity      string
+}
+
+type Transaction struct {
+	TransactionID   int64
+	Uname           string
+	BookID          int64
+	TransactionType string
+	Sqltime         time.Time
+	Validity        string
+}
+
 type User struct {
 	UserID      int64
 	Uname       string
