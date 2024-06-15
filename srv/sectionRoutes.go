@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -120,6 +121,50 @@ func (app *application) getSignOut(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (app *application) getSignOutSignInPage(w http.ResponseWriter, r *http.Request) {
+	cookie := http.Cookie{
+		Name:  "uname",
+		Value: "null",
+	}
+	http.SetCookie(w, &cookie)
+	ts, err := template.ParseFiles("./ui/html/librarian/signin-page.html")
+	if err != nil {
+		log.Print(err)
+	}
+	err = ts.Execute(w, nil)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
 func (app *application) getProfileSignOut(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(string("<a id='profile' hx-get='/sign-in' hx-target='.section-content' hx-swap='outerHTML'>Profile</a>")))
+}
+
+func (app *application) getTransactions(w http.ResponseWriter, r *http.Request) {
+	ts, err := template.ParseFiles("./ui/html/librarian/transaction.html")
+	if err != nil {
+		log.Print(err)
+	}
+
+	err = ts.Execute(w, nil)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+func (app *application) getMemberships(w http.ResponseWriter, r *http.Request) {
+	users, err := app.queries.RetrieveUsersThatReqApproval(app.ctx)
+	if err != nil {
+		fmt.Println(err)
+	}
+	ts, err := template.ParseFiles("./ui/html/librarian/membership.html")
+	if err != nil {
+		log.Print(err)
+	}
+
+	err = ts.Execute(w, users)
+	if err != nil {
+		log.Print(err)
+	}
 }

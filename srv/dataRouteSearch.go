@@ -133,14 +133,26 @@ func (app *application) postSignIn(w http.ResponseWriter, r *http.Request) {
 			Value: uname,
 		}
 		http.SetCookie(w, &cookie)
-		ts, err := template.ParseFiles("./ui/html/main-sections/profile.html")
+		_, err := app.queries.RetrieveLibrarian(app.ctx, uname)
 		if err != nil {
-			log.Print(err)
-		}
-		books, _ := app.queries.RetrieveReservedBooks(app.ctx, uname)
-		err = ts.Execute(w, books)
-		if err != nil {
-			log.Print(err)
+			ts, err := template.ParseFiles("./ui/html/main-sections/profile.html")
+			if err != nil {
+				log.Print(err)
+			}
+			books, _ := app.queries.RetrieveReservedBooks(app.ctx, uname)
+			err = ts.Execute(w, books)
+			if err != nil {
+				log.Print(err)
+			}
+		} else {
+			ts, err := template.ParseFiles("./ui/html/librarian/librarian.html")
+			if err != nil {
+				log.Print(err)
+			}
+			err = ts.Execute(w, nil)
+			if err != nil {
+				log.Print(err)
+			}
 		}
 	} else {
 		ts, err := template.ParseFiles("./ui/html/main-sections/wrong-passwd.html")

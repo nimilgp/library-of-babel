@@ -466,6 +466,29 @@ func (q *Queries) RetrieveBooksOfGenre(ctx context.Context, genre string) ([]Boo
 	return items, nil
 }
 
+const retrieveLibrarian = `-- name: RetrieveLibrarian :one
+SELECT user_id, uname, passwd_hash, email, first_name, last_name, user_type, actions_left, sqltime, validity FROM users
+WHERE uname = ? and user_type='librarian'
+`
+
+func (q *Queries) RetrieveLibrarian(ctx context.Context, uname string) (User, error) {
+	row := q.db.QueryRowContext(ctx, retrieveLibrarian, uname)
+	var i User
+	err := row.Scan(
+		&i.UserID,
+		&i.Uname,
+		&i.PasswdHash,
+		&i.Email,
+		&i.FirstName,
+		&i.LastName,
+		&i.UserType,
+		&i.ActionsLeft,
+		&i.Sqltime,
+		&i.Validity,
+	)
+	return i, err
+}
+
 const retrievePsswdHash = `-- name: RetrievePsswdHash :one
 SELECT passwd_hash FROM users
 WHERE uname = ? AND validity = 'valid'
@@ -553,6 +576,45 @@ WHERE user_type = ? AND validity = 'valid'
 
 func (q *Queries) RetrieveUsersByUType(ctx context.Context, userType string) ([]User, error) {
 	rows, err := q.db.QueryContext(ctx, retrieveUsersByUType, userType)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []User
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.UserID,
+			&i.Uname,
+			&i.PasswdHash,
+			&i.Email,
+			&i.FirstName,
+			&i.LastName,
+			&i.UserType,
+			&i.ActionsLeft,
+			&i.Sqltime,
+			&i.Validity,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const retrieveUsersThatReqApproval = `-- name: RetrieveUsersThatReqApproval :many
+SELECT user_id, uname, passwd_hash, email, first_name, last_name, user_type, actions_left, sqltime, validity FROM users
+WHERE validity='valid' and user_type='approvalreq'
+`
+
+func (q *Queries) RetrieveUsersThatReqApproval(ctx context.Context) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, retrieveUsersThatReqApproval)
 	if err != nil {
 		return nil, err
 	}

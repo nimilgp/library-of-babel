@@ -47,6 +47,9 @@ func main() {
 	mux.HandleFunc("GET /sign-up/{$}", app.getSignUp)
 	mux.HandleFunc("GET /profile", app.getProfile)
 	mux.HandleFunc("GET /sign-out", app.getSignOut)
+	mux.HandleFunc("GET /sign-out-sign-in-page", app.getSignOutSignInPage)
+	mux.HandleFunc("GET /transactions", app.getTransactions)
+	mux.HandleFunc("GET /memberships", app.getMemberships)
 	//ui updations
 	mux.HandleFunc("GET /empty-section-body", app.getEmptySectionBody)
 	mux.HandleFunc("GET /search-type/{type}", app.getSearchType)

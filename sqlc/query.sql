@@ -142,3 +142,11 @@ WHERE title = ?;
 -- name: RetrieveBookByBID :one
 SELECT * FROM books
 WHERE book_id = ?;
+
+-- name: RetrieveLibrarian :one
+SELECT * FROM users
+WHERE uname = ? and user_type='librarian';
+
+-- name: RetrieveUsersThatReqApproval :many
+SELECT * FROM users
+WHERE validity='valid' and user_type='approvalreq';

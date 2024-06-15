@@ -1,0 +1,25 @@
+<main class="section-content">
+    <section class="section-intro">
+        <h1>Memberships</h1>
+    </section>
+    <section class="section-body">
+        <section id="approve-disapprove">
+            <h1>Approve/Disapprove Membership</h1>
+            <ul class="list-items">
+                {{ range .}}
+                    <li>
+                        <div>
+                            <h1>UName: {{.Uname}}</h1>
+                            <div>Full Name: {{.FirstName}} {{.LastName}}</div>
+                        </div>
+                        <div>button</div>
+                    </li>
+                {{end}}
+            </ul>
+        </section>
+
+        <section id="revoke">
+            <h1>Revoke Membership</h1>
+        </section>
+    </section>
+</main>

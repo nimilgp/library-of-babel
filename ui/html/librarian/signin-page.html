@@ -1,0 +1,41 @@
+<body>
+    <header>
+        <nav>
+            <ul id="logo-name">
+                <img hx-get="/home" hx-target=".section-content" hx-swap="outerHTML" src="/static/img/book-svgrepo-com.svg" width="50px">
+                <a hx-get="/home" hx-target=".section-content" hx-swap="outerHTML">Library of Babel</a>
+            </ul>
+            <ul id="nav-options">
+                <a hx-get="/browse" hx-target=".section-content" hx-swap="outerHTML">Browse</a> 
+                <a hx-get="/search" hx-target=".section-content" hx-swap="outerHTML">Search</a>
+                <a hx-get="/notice" hx-target=".section-content" hx-swap="outerHTML">Notice</a>
+                <a id="profile" hx-get="/sign-in" hx-target=".section-content" hx-swap="outerHTML">Sign In</a>
+            </ul>
+        </nav> 
+    </header>
+    
+    <main class="section-content">
+        <section class="section-intro">
+            <h1>Sign In</h1>
+    
+            <div class="sign-in-container">
+                <form hx-post="/sign-in" hx-target="body" hx-swap="innerHTML">
+                    <input type="text" name="uname" placeholder="Username" required>
+                    <input type="password" name="passwd" placeholder="Password" required>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <label hx-get="/sign-up" hx-target=".section-content" hx-swap="outerHTML" id="sign-up-option">Sign Up for an Account</label>
+        </section>
+    </main>
+
+    <footer>
+        Powered by 
+        <a id="htmx-link" href="https://htmx.org/">HTMX</a>
+        +
+        <a id="go-link" href="https://go.dev/">GO</a>
+        +
+        <a id="sqlite-link" href="https://sqlite.org/">SQLite</a>
+    </footer>
+
+</body>
