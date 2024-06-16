@@ -489,6 +489,45 @@ func (q *Queries) RetrieveLibrarian(ctx context.Context, uname string) (User, er
 	return i, err
 }
 
+const retrieveMembersToRevokeLike = `-- name: RetrieveMembersToRevokeLike :many
+SELECT user_id, uname, passwd_hash, email, first_name, last_name, user_type, actions_left, sqltime, validity FROM users
+WHERE validity='valid' and user_type='member' AND uname LIKE '%'|| ? || '%'
+`
+
+func (q *Queries) RetrieveMembersToRevokeLike(ctx context.Context, dollar_1 sql.NullString) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, retrieveMembersToRevokeLike, dollar_1)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []User
+	for rows.Next() {
+		var i User
+		if err := rows.Scan(
+			&i.UserID,
+			&i.Uname,
+			&i.PasswdHash,
+			&i.Email,
+			&i.FirstName,
+			&i.LastName,
+			&i.UserType,
+			&i.ActionsLeft,
+			&i.Sqltime,
+			&i.Validity,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const retrievePsswdHash = `-- name: RetrievePsswdHash :one
 SELECT passwd_hash FROM users
 WHERE uname = ? AND validity = 'valid' AND user_type != 'approvalreq'

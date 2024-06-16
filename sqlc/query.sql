@@ -150,3 +150,7 @@ WHERE uname = ? and user_type='librarian';
 -- name: RetrieveUsersThatReqApprovalLike :many
 SELECT * FROM users
 WHERE validity='valid' and user_type='approvalreq' AND uname LIKE '%'|| ? || '%';
+
+-- name: RetrieveMembersToRevokeLike :many
+SELECT * FROM users
+WHERE validity='valid' and user_type='member' AND uname LIKE '%'|| ? || '%';

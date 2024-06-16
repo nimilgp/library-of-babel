@@ -1,4 +1,4 @@
-<section id="approve-disapprove">
+<section id="revoke-membership">
     <ul class="list-items">
         {{ range .}}
             <li id="list-users-{{.UserID}}">
@@ -7,8 +7,7 @@
                     <div>Full Name: {{.FirstName}} {{.LastName}}</div>
                 </div>
                 <div class="approve-labels">
-                    <label hx-post="/approve/{{.UserID}}" hx-target="#list-users-{{.UserID}}" hx-swap="outerHTML">Approve</label>
-                    <label hx-post="/disapprove/{{.UserID}}" hx-target="#list-users-{{.UserID}}" hx-swap="outerHTML">Disapprove</label>
+                    <label hx-post="/revoke/{{.UserID}}" hx-target="#list-users-{{.UserID}}" hx-swap="outerHTML">Revoke</label>
                 </div>
             </li>
         {{end}}

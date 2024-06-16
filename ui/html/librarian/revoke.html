@@ -1,22 +1,13 @@
 <main class="section-content">
     <section class="section-intro">
         <h1>Revoke Memberships</h1>
+        <div class="search-container">
+            <form hx-post="/revoke-list" hx-target=".section-body" hx-swap="innerHTML">
+              <input type="text" name="uname" placeholder="Username..">
+              <button type="submit">Search</button>
+            </form>
+        </div>
     </section>
     <section class="section-body">
-        <section id="revoke-membership">
-            <ul class="list-items">
-                {{ range .}}
-                    <li id="list-users-{{.UserID}}">
-                        <div>
-                            <h1>UName: {{.Uname}}</h1>
-                            <div>Full Name: {{.FirstName}} {{.LastName}}</div>
-                        </div>
-                        <div class="approve-labels">
-                            <label hx-post="/revoke/{{.UserID}}" hx-target="#list-users-{{.UserID}}" hx-swap="outerHTML">Revoke</label>
-                        </div>
-                    </li>
-                {{end}}
-            </ul>
-        </section>
     </section>
 </main>

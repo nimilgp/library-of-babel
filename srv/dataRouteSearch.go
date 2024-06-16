@@ -275,5 +275,17 @@ func (app *application) postApprovalList(w http.ResponseWriter, r *http.Request)
 	if err != nil {
 		log.Print(err)
 	}
+}
 
+func (app *application) postRevokeList(w http.ResponseWriter, r *http.Request) {
+	uname := r.PostFormValue("uname")
+	users, _ := app.queries.RetrieveMembersToRevokeLike(app.ctx, sql.NullString{String: uname, Valid: true})
+	ts, err := template.ParseFiles("./ui/html/librarian/revoke-list.html")
+	if err != nil {
+		log.Print(err)
+	}
+	err = ts.Execute(w, users)
+	if err != nil {
+		log.Print(err)
+	}
 }
