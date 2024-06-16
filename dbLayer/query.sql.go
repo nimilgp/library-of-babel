@@ -491,7 +491,7 @@ func (q *Queries) RetrieveLibrarian(ctx context.Context, uname string) (User, er
 
 const retrievePsswdHash = `-- name: RetrievePsswdHash :one
 SELECT passwd_hash FROM users
-WHERE uname = ? AND validity = 'valid'
+WHERE uname = ? AND validity = 'valid' AND user_type != 'approvalreq'
 `
 
 func (q *Queries) RetrievePsswdHash(ctx context.Context, uname string) (string, error) {
@@ -608,13 +608,13 @@ func (q *Queries) RetrieveUsersByUType(ctx context.Context, userType string) ([]
 	return items, nil
 }
 
-const retrieveUsersThatReqApproval = `-- name: RetrieveUsersThatReqApproval :many
+const retrieveUsersThatReqApprovalLike = `-- name: RetrieveUsersThatReqApprovalLike :many
 SELECT user_id, uname, passwd_hash, email, first_name, last_name, user_type, actions_left, sqltime, validity FROM users
-WHERE validity='valid' and user_type='approvalreq'
+WHERE validity='valid' and user_type='approvalreq' AND uname LIKE '%'|| ? || '%'
 `
 
-func (q *Queries) RetrieveUsersThatReqApproval(ctx context.Context) ([]User, error) {
-	rows, err := q.db.QueryContext(ctx, retrieveUsersThatReqApproval)
+func (q *Queries) RetrieveUsersThatReqApprovalLike(ctx context.Context, dollar_1 sql.NullString) ([]User, error) {
+	rows, err := q.db.QueryContext(ctx, retrieveUsersThatReqApprovalLike, dollar_1)
 	if err != nil {
 		return nil, err
 	}

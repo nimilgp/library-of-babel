@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -141,8 +140,8 @@ func (app *application) getProfileSignOut(w http.ResponseWriter, r *http.Request
 	w.Write([]byte(string("<a id='profile' hx-get='/sign-in' hx-target='.section-content' hx-swap='outerHTML'>Profile</a>")))
 }
 
-func (app *application) getTransactions(w http.ResponseWriter, r *http.Request) {
-	ts, err := template.ParseFiles("./ui/html/librarian/transaction.html")
+func (app *application) getIssue(w http.ResponseWriter, r *http.Request) {
+	ts, err := template.ParseFiles("./ui/html/librarian/issue.html")
 	if err != nil {
 		log.Print(err)
 	}
@@ -153,17 +152,37 @@ func (app *application) getTransactions(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
-func (app *application) getMemberships(w http.ResponseWriter, r *http.Request) {
-	users, err := app.queries.RetrieveUsersThatReqApproval(app.ctx)
-	if err != nil {
-		fmt.Println(err)
-	}
-	ts, err := template.ParseFiles("./ui/html/librarian/membership.html")
+func (app *application) getApprove(w http.ResponseWriter, r *http.Request) {
+	ts, err := template.ParseFiles("./ui/html/librarian/approve.html")
 	if err != nil {
 		log.Print(err)
 	}
 
-	err = ts.Execute(w, users)
+	err = ts.Execute(w, nil)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+func (app *application) getReturn(w http.ResponseWriter, r *http.Request) {
+	ts, err := template.ParseFiles("./ui/html/librarian/return.html")
+	if err != nil {
+		log.Print(err)
+	}
+
+	err = ts.Execute(w, nil)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+func (app *application) getRevoke(w http.ResponseWriter, r *http.Request) {
+	ts, err := template.ParseFiles("./ui/html/librarian/revoke.html")
+	if err != nil {
+		log.Print(err)
+	}
+
+	err = ts.Execute(w, nil)
 	if err != nil {
 		log.Print(err)
 	}

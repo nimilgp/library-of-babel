@@ -151,7 +151,7 @@ input[type="radio"] {
     color: whitesmoke;
 }
 
-.reserve-label {
+.reserve-label, .approve-labels label {
     font-size: 2rem;
     padding: 10px 20px;
     background-color: #2e2459;
@@ -181,4 +181,8 @@ input[type="radio"] {
     background-color: #a72145;
     color: whitesmoke;
     padding: 10px 50px;
+}
+
+.approve-labels {
+    padding: 10px 0;
 }

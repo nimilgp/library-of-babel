@@ -1,0 +1,16 @@
+<section id="approve-disapprove">
+    <ul class="list-items">
+        {{ range .}}
+            <li id="list-users-{{.UserID}}">
+                <div>
+                    <h1>UName: {{.Uname}}</h1>
+                    <div>Full Name: {{.FirstName}} {{.LastName}}</div>
+                </div>
+                <div class="approve-labels">
+                    <label hx-post="/approve/{{.UserID}}" hx-target="#list-users-{{.UserID}}" hx-swap="outerHTML">Approve</label>
+                    <label hx-post="/disapprove/{{.UserID}}" hx-target="#list-users-{{.UserID}}" hx-swap="outerHTML">Disapprove</label>
+                </div>
+            </li>
+        {{end}}
+    </ul>
+</section>

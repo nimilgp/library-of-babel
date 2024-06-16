@@ -232,3 +232,48 @@ func (app *application) postCancelReservation(w http.ResponseWriter, r *http.Req
 	app.queries.UpdateReservationValidity(app.ctx, RID)
 	app.queries.UpdateBookQuantityIncrease(app.ctx, title)
 }
+
+func (app *application) postApproveUser(w http.ResponseWriter, r *http.Request) {
+	uid := r.PathValue("UserID")
+	UID, _ := strconv.ParseInt(uid, 10, 64)
+	varstruc := dbLayer.UpdateUserTypeParams{
+		UserType: "member",
+		UserID:   UID,
+	}
+	err := app.queries.UpdateUserType(app.ctx, varstruc)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func (app *application) postDispproveUser(w http.ResponseWriter, r *http.Request) {
+	uid := r.PathValue("UserID")
+	UID, _ := strconv.ParseInt(uid, 10, 64)
+	err := app.queries.UpdateUserValidity(app.ctx, UID)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func (app *application) postRevokeUser(w http.ResponseWriter, r *http.Request) {
+	uid := r.PathValue("UserID")
+	UID, _ := strconv.ParseInt(uid, 10, 64)
+	err := app.queries.UpdateUserValidity(app.ctx, UID)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func (app *application) postApprovalList(w http.ResponseWriter, r *http.Request) {
+	uname := r.PostFormValue("uname")
+	users, _ := app.queries.RetrieveUsersThatReqApprovalLike(app.ctx, sql.NullString{String: uname, Valid: true})
+	ts, err := template.ParseFiles("./ui/html/librarian/approve-list.html")
+	if err != nil {
+		log.Print(err)
+	}
+	err = ts.Execute(w, users)
+	if err != nil {
+		log.Print(err)
+	}
+
+}

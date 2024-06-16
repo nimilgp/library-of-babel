@@ -59,7 +59,7 @@ WHERE uname = ? AND validity = 'valid';
 
 -- name: RetrievePsswdHash :one
 SELECT passwd_hash FROM users
-WHERE uname = ? AND validity = 'valid';
+WHERE uname = ? AND validity = 'valid' AND user_type != 'approvalreq';
 
 -- name: RetrieveUsersByUType :many
 SELECT * FROM users
@@ -147,6 +147,6 @@ WHERE book_id = ?;
 SELECT * FROM users
 WHERE uname = ? and user_type='librarian';
 
--- name: RetrieveUsersThatReqApproval :many
+-- name: RetrieveUsersThatReqApprovalLike :many
 SELECT * FROM users
-WHERE validity='valid' and user_type='approvalreq';
+WHERE validity='valid' and user_type='approvalreq' AND uname LIKE '%'|| ? || '%';

@@ -48,8 +48,10 @@ func main() {
 	mux.HandleFunc("GET /profile", app.getProfile)
 	mux.HandleFunc("GET /sign-out", app.getSignOut)
 	mux.HandleFunc("GET /sign-out-sign-in-page", app.getSignOutSignInPage)
-	mux.HandleFunc("GET /transactions", app.getTransactions)
-	mux.HandleFunc("GET /memberships", app.getMemberships)
+	mux.HandleFunc("GET /issue", app.getIssue)
+	mux.HandleFunc("GET /approve", app.getApprove)
+	mux.HandleFunc("GET /return", app.getReturn)
+	mux.HandleFunc("GET /revoke", app.getRevoke)
 	//ui updations
 	mux.HandleFunc("GET /empty-section-body", app.getEmptySectionBody)
 	mux.HandleFunc("GET /search-type/{type}", app.getSearchType)
@@ -60,6 +62,10 @@ func main() {
 	mux.HandleFunc("GET /browse-rating", app.getBrowseRating)
 	mux.HandleFunc("POST /reserve/{BookID}", app.postReserveBook)
 	mux.HandleFunc("POST /cancel/{ReservationID}/{Title}", app.postCancelReservation)
+	mux.HandleFunc("POST /approve/{UserID}", app.postApproveUser)
+	mux.HandleFunc("POST /disapprove/{UserID}", app.postDispproveUser)
+	mux.HandleFunc("POST /revoke/{UserID}", app.postRevokeUser)
+	mux.HandleFunc("POST /approval-list", app.postApprovalList)
 	//action
 	mux.HandleFunc("POST /sign-in", app.postSignIn)
 	mux.HandleFunc("POST /sign-up", app.postSignUp)

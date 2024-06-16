@@ -1,25 +1,22 @@
 <main class="section-content">
     <section class="section-intro">
-        <h1>Memberships</h1>
+        <h1>Revoke Memberships</h1>
     </section>
     <section class="section-body">
-        <section id="approve-disapprove">
-            <h1>Approve/Disapprove Membership</h1>
+        <section id="revoke-membership">
             <ul class="list-items">
                 {{ range .}}
-                    <li>
+                    <li id="list-users-{{.UserID}}">
                         <div>
                             <h1>UName: {{.Uname}}</h1>
                             <div>Full Name: {{.FirstName}} {{.LastName}}</div>
                         </div>
-                        <div>button</div>
+                        <div class="approve-labels">
+                            <label hx-post="/revoke/{{.UserID}}" hx-target="#list-users-{{.UserID}}" hx-swap="outerHTML">Revoke</label>
+                        </div>
                     </li>
                 {{end}}
             </ul>
-        </section>
-
-        <section id="revoke">
-            <h1>Revoke Membership</h1>
         </section>
     </section>
 </main>
