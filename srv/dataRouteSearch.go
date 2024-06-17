@@ -203,12 +203,14 @@ func (app *application) postSignUp(w http.ResponseWriter, r *http.Request) {
 func (app *application) postReserveBook(w http.ResponseWriter, r *http.Request) {
 	bid := r.PathValue("BookID")
 	BID, _ := strconv.ParseInt(bid, 10, 64)
+	book, _ := app.queries.RetrieveBookByBID(app.ctx, BID)
 	cookie, _ := r.Cookie("uname")
 	uname := cookie.Value
 	resv := dbLayer.CreateReservationForBookParams{
-		Uname:  uname,
-		BookID: BID,
+		Uname: uname,
+		Title: book.Title,
 	}
+	fmt.Println(resv)
 	err := app.queries.CreateReservationForBook(app.ctx, resv)
 	if err != nil {
 		fmt.Println(err)
@@ -218,7 +220,6 @@ func (app *application) postReserveBook(w http.ResponseWriter, r *http.Request) 
 	if err != nil {
 		log.Print(err)
 	}
-	book, _ := app.queries.RetrieveBookByBID(app.ctx, BID)
 	err = ts.Execute(w, book)
 	if err != nil {
 		log.Print(err)

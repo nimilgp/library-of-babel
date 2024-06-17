@@ -74,19 +74,19 @@ func (q *Queries) CreateNewUser(ctx context.Context, arg CreateNewUserParams) er
 
 const createReservationForBook = `-- name: CreateReservationForBook :exec
 INSERT INTO reservations (
-	uname, book_id
+	uname, title
 ) VALUES (
 	?, ?
 )
 `
 
 type CreateReservationForBookParams struct {
-	Uname  string
-	BookID int64
+	Uname string
+	Title string
 }
 
 func (q *Queries) CreateReservationForBook(ctx context.Context, arg CreateReservationForBookParams) error {
-	_, err := q.db.ExecContext(ctx, createReservationForBook, arg.Uname, arg.BookID)
+	_, err := q.db.ExecContext(ctx, createReservationForBook, arg.Uname, arg.Title)
 	return err
 }
 
@@ -130,7 +130,7 @@ const createTableTransactions = `-- name: CreateTableTransactions :exec
 CREATE TABLE transactions (
 		transaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
 		uname TEXT NOT NULL,
-		book_id INTEGER NOT NULL,
+		title TEXT NOT NULL,
 		transaction_type TEXT NOT NULL,
 		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 		validity TEXT DEFAULT 'valid' NOT NULL
@@ -208,6 +208,30 @@ WHERE book_id = ?
 
 func (q *Queries) RetrieveBookByBID(ctx context.Context, bookID int64) (Book, error) {
 	row := q.db.QueryRowContext(ctx, retrieveBookByBID, bookID)
+	var i Book
+	err := row.Scan(
+		&i.BookID,
+		&i.Title,
+		&i.Author,
+		&i.Year,
+		&i.Genre,
+		&i.Isbn,
+		&i.Rating,
+		&i.Readers,
+		&i.Quantity,
+		&i.Sqltime,
+		&i.Validity,
+	)
+	return i, err
+}
+
+const retrieveBookFromBID = `-- name: RetrieveBookFromBID :one
+SELECT book_id, title, author, year, genre, isbn, rating, readers, quantity, sqltime, validity FROM books
+WHERE book_id = ?
+`
+
+func (q *Queries) RetrieveBookFromBID(ctx context.Context, bookID int64) (Book, error) {
+	row := q.db.QueryRowContext(ctx, retrieveBookFromBID, bookID)
 	var i Book
 	err := row.Scan(
 		&i.BookID,
@@ -541,11 +565,11 @@ func (q *Queries) RetrievePsswdHash(ctx context.Context, uname string) (string, 
 }
 
 const retrieveReservedBooks = `-- name: RetrieveReservedBooks :many
-SELECT reservation_id, title, author, rating, reservations.book_id 
+SELECT reservation_id, reservations.title, author, rating, book_id
 FROM reservations,books
 WHERE reservations.uname = ? 
 AND reservations.validity = 'valid' 
-AND reservations.book_id = books.book_id
+AND reservations.title = books.title
 `
 
 type RetrieveReservedBooksRow struct {

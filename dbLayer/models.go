@@ -25,7 +25,7 @@ type Book struct {
 type Reservation struct {
 	ReservationID int64
 	Uname         string
-	BookID        int64
+	Title         string
 	Sqltime       time.Time
 	Validity      string
 }
@@ -33,7 +33,7 @@ type Reservation struct {
 type Transaction struct {
 	TransactionID   int64
 	Uname           string
-	BookID          int64
+	Title           string
 	TransactionType string
 	Sqltime         time.Time
 	Validity        string

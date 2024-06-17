@@ -28,7 +28,7 @@ CREATE TABLE books (
 CREATE TABLE transactions (
 		transaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
 		uname TEXT NOT NULL,
-		book_id INTEGER NOT NULL,
+		title TEXT NOT NULL,
 		transaction_type TEXT NOT NULL,
 		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 		validity TEXT DEFAULT 'valid' NOT NULL
@@ -37,7 +37,7 @@ CREATE TABLE transactions (
 CREATE TABLE reservations (
 		reservation_id INTEGER PRIMARY KEY AUTOINCREMENT,
 		uname TEXT NOT NULL,
-		book_id INTEGER NOT NULL,
+		title TEXT NOT NULL,
 		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 		validity TEXT DEFAULT 'valid' NOT NULL
 );

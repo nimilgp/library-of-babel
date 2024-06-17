@@ -31,7 +31,7 @@ CREATE TABLE books (
 CREATE TABLE transactions (
 		transaction_id INTEGER PRIMARY KEY AUTOINCREMENT,
 		uname TEXT NOT NULL,
-		book_id INTEGER NOT NULL,
+		title TEXT NOT NULL,
 		transaction_type TEXT NOT NULL,
 		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 		validity TEXT DEFAULT 'valid' NOT NULL
@@ -112,7 +112,7 @@ ORDER BY rating DESC;
 
 -- name: CreateReservationForBook :exec
 INSERT INTO reservations (
-	uname, book_id
+	uname, title
 ) VALUES (
 	?, ?
 );
@@ -123,11 +123,11 @@ SET quantity = quantity - 1
 WHERE book_id = ?;
 
 -- name: RetrieveReservedBooks :many
-SELECT reservation_id, title, author, rating, reservations.book_id 
+SELECT reservation_id, reservations.title, author, rating, book_id
 FROM reservations,books
 WHERE reservations.uname = ? 
 AND reservations.validity = 'valid' 
-AND reservations.book_id = books.book_id ;
+AND reservations.title = books.title ;
 
 -- name: UpdateReservationValidity :exec
 UPDATE reservations
@@ -154,3 +154,7 @@ WHERE validity='valid' and user_type='approvalreq' AND uname LIKE '%'|| ? || '%'
 -- name: RetrieveMembersToRevokeLike :many
 SELECT * FROM users
 WHERE validity='valid' and user_type='member' AND uname LIKE '%'|| ? || '%';
+
+-- name: RetrieveBookFromBID :one
+SELECT * FROM books
+WHERE book_id = ?;
