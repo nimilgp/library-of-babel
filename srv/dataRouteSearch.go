@@ -346,6 +346,17 @@ func (app *application) postAvailibleBooksList(w http.ResponseWriter, r *http.Re
 func (app *application) postIssueGeneralBook(w http.ResponseWriter, r *http.Request) {
 	title := r.PathValue("Title")
 	bid := r.PathValue("BookID")
+	cookie, _ := r.Cookie("selected-user")
+	uname := cookie.Value
+	BID, _ := strconv.ParseInt(bid, 10, 64)
+	fmt.Println(uname)
 	fmt.Println(title)
 	fmt.Println(bid)
+	args := dbLayer.CreateTransactionParams{
+		Uname:           uname,
+		Title:           title,
+		TransactionType: "issue",
+	}
+	app.queries.CreateTransaction(app.ctx, args)
+	app.queries.UpdateBookQuantityDecrease(app.ctx, BID)
 }

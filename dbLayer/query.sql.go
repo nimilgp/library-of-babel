@@ -162,6 +162,25 @@ func (q *Queries) CreateTableUsers(ctx context.Context) error {
 	return err
 }
 
+const createTransaction = `-- name: CreateTransaction :exec
+INSERT INTO transactions (
+	uname, title, transaction_type
+) VALUES (
+	?, ?, ?
+)
+`
+
+type CreateTransactionParams struct {
+	Uname           string
+	Title           string
+	TransactionType string
+}
+
+func (q *Queries) CreateTransaction(ctx context.Context, arg CreateTransactionParams) error {
+	_, err := q.db.ExecContext(ctx, createTransaction, arg.Uname, arg.Title, arg.TransactionType)
+	return err
+}
+
 const retrieveAllBooks = `-- name: RetrieveAllBooks :many
 SELECT book_id, title, author, year, genre, isbn, rating, readers, quantity, sqltime, validity FROM books
 `

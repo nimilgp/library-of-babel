@@ -162,3 +162,10 @@ WHERE book_id = ?;
 -- name: RetrieveAvailibleBooks :many
 SELECT * FROM books
 WHERE quantity > 0 AND validity = 'valid' AND title LIKE '%'|| ? || '%';
+
+-- name: CreateTransaction :exec
+INSERT INTO transactions (
+	uname, title, transaction_type
+) VALUES (
+	?, ?, ?
+);

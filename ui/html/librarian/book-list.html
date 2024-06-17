@@ -6,7 +6,7 @@
                 <div>By: {{.Author}}</div>
             </div>
             <div class="approve-labels">
-                <label hx-post="/issue-general/{{.Title}}/{{.BookID}}" hx-target="#list-books-{{.BookID}}" hx-swap="outerHTML">Select</label>
+                <label hx-post="/issue-general/{{.Title}}/{{.BookID}}" hx-target=".section-body" hx-swap="innerHTML">Select</label>
             </div>
         </li>
     {{end}}
