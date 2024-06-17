@@ -1,0 +1,13 @@
+<ul class="list-items">
+    {{ range .}}
+        <li id="list-users-{{.UserID}}">
+            <div>
+                <h1>Username: {{.Uname}}</h1>
+                <div>Full Name: {{.FirstName}} {{.LastName}}</div>
+            </div>
+            <div class="approve-labels">
+                <label hx-post="/selected-user/{{.Uname}}" hx-target=".section-body" hx-swap="innerHTML">Select</label>
+            </div>
+        </li>
+    {{end}}
+</ul>

@@ -23,19 +23,26 @@
     </section>
 
 <section class="section-body">
-    <ul class="list-items">
-        {{ range . }}
-            <li id="list-item-{{.ReservationID}}">
-                <div class="book-details">
-                    <h1>{{ .Title }}</h1>
-                    <div>By {{ .Author}}</div>
-                </div>
-                <div class="cancel-reservation">
-                    <label hx-post="/cancel/{{.ReservationID}}/{{.Title}}" hx-target="#list-item-{{.ReservationID}}" hx-swap="outerHTML">Cancel</label>
-                </div>
-            </li>
-        {{end}}
-    </ul>
+    {{if .}}
+        <ul class="list-items">
+            <h1>Reserved Books</h1>
+            {{ range . }}
+                <li id="list-item-{{.ReservationID}}">
+                    <div class="book-details">
+                        <h1>{{ .Title }}</h1>
+                        <div>By {{ .Author}}</div>
+                    </div>
+                    <div class="cancel-reservation">
+                        <label hx-post="/cancel/{{.ReservationID}}/{{.Title}}" hx-target="#list-item-{{.ReservationID}}" hx-swap="outerHTML">Cancel</label>
+                    </div>
+                </li>
+            {{end}}
+        </ul>
+    {{else}}
+        <section class="red-zone">
+            <h1>No Reserved Books</h1>
+        </section>
+    {{end}}
 </section>
 </main>
 

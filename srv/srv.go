@@ -67,6 +67,8 @@ func main() {
 	mux.HandleFunc("POST /revoke/{UserID}", app.postRevokeUser)
 	mux.HandleFunc("POST /approval-list", app.postApprovalList)
 	mux.HandleFunc("POST /revoke-list", app.postRevokeList)
+	mux.HandleFunc("POST /members-list", app.postMembersList)
+	mux.HandleFunc("POST /selected-user/{Uname}", app.postSelectedUser)
 	//action
 	mux.HandleFunc("POST /sign-in", app.postSignIn)
 	mux.HandleFunc("POST /sign-up", app.postSignUp)

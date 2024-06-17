@@ -220,7 +220,8 @@ func (app *application) postReserveBook(w http.ResponseWriter, r *http.Request) 
 	if err != nil {
 		log.Print(err)
 	}
-	err = ts.Execute(w, book)
+	upbook, _ := app.queries.RetrieveBookByBID(app.ctx, BID)
+	err = ts.Execute(w, upbook)
 	if err != nil {
 		log.Print(err)
 	}
@@ -289,4 +290,30 @@ func (app *application) postRevokeList(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Print(err)
 	}
+}
+
+func (app *application) postMembersList(w http.ResponseWriter, r *http.Request) {
+	uname := r.PostFormValue("uname")
+	users, err := app.queries.RetrieveMembersToRevokeLike(app.ctx, sql.NullString{String: uname, Valid: true})
+	if err != nil {
+		fmt.Println(err)
+	}
+	ts, err := template.ParseFiles("./ui/html/librarian/members-list.html")
+	if err != nil {
+		log.Print(err)
+	}
+	err = ts.Execute(w, users)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+func (app *application) postSelectedUser(w http.ResponseWriter, r *http.Request) {
+	uname := r.PathValue("Uname")
+	cookie := http.Cookie{
+		Name:  "selected-user",
+		Value: uname,
+		Path:  "/",
+	}
+	http.SetCookie(w, &cookie)
 }

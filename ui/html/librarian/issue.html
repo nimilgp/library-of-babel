@@ -1,8 +1,13 @@
 <main class="section-content">
     <section class="section-intro">
         <h1>Issue Books</h1>
+        <div class="search-container">
+            <form hx-post="/members-list" hx-target=".section-body" hx-swap="innerHTML">
+              <input type="text" name="uname" placeholder="Username..">
+              <button type="submit">Search</button>
+            </form>
+        </div>
     </section>
     <section class="section-body">
-
     </section>
 </main>
