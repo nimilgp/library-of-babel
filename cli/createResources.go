@@ -21,7 +21,10 @@ func (cfg *config) createResources() {
 	defer db.Close()
 	ctx := context.Background()
 	queries := dbLayer.New(db)
-	if queries.CreateTableUsers(ctx) != nil || queries.CreateTableBooks(ctx) != nil {
+	if queries.CreateTableUsers(ctx) != nil ||
+		queries.CreateTableBooks(ctx) != nil ||
+		queries.CreateTableReservation(ctx) != nil ||
+		queries.CreateTableTransactions(ctx) != nil {
 		log.Fatal("Failed Creation of Tables")
 	}
 	fmt.Println("Created Tables")

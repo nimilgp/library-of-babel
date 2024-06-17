@@ -6,7 +6,7 @@ CREATE TABLE users (
 		email TEXT NOT NULL,
 		first_name TEXT NOT NULL,
 		last_name TEXT NOT NULL,
-		user_type TEXT  NOT NULL,
+		user_type TEXT NOT NULL,
 		actions_left INTEGER DEFAULT '5' NOT NULL,
 		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 		validity TEXT DEFAULT 'valid' NOT NULL
@@ -178,3 +178,8 @@ WHERE validity = 'valid' AND transaction_type = 'issue' AND uname = ?;
 UPDATE transactions
 SET validity = 'invalid'
 WHERE transaction_id = ?;
+
+-- name: InvalidateUser :exec
+UPDATE users
+SET validity = 'invalid'
+WHERE uname = ?;

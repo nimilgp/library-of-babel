@@ -150,7 +150,7 @@ CREATE TABLE users (
 		email TEXT NOT NULL,
 		first_name TEXT NOT NULL,
 		last_name TEXT NOT NULL,
-		user_type TEXT  NOT NULL,
+		user_type TEXT NOT NULL,
 		actions_left INTEGER DEFAULT '5' NOT NULL,
 		sqltime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 		validity TEXT DEFAULT 'valid' NOT NULL
@@ -178,6 +178,17 @@ type CreateTransactionParams struct {
 
 func (q *Queries) CreateTransaction(ctx context.Context, arg CreateTransactionParams) error {
 	_, err := q.db.ExecContext(ctx, createTransaction, arg.Uname, arg.Title, arg.TransactionType)
+	return err
+}
+
+const invalidateUser = `-- name: InvalidateUser :exec
+UPDATE users
+SET validity = 'invalid'
+WHERE uname = ?
+`
+
+func (q *Queries) InvalidateUser(ctx context.Context, uname string) error {
+	_, err := q.db.ExecContext(ctx, invalidateUser, uname)
 	return err
 }
 
