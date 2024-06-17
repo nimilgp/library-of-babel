@@ -210,7 +210,6 @@ func (app *application) postReserveBook(w http.ResponseWriter, r *http.Request) 
 		Uname: uname,
 		Title: book.Title,
 	}
-	fmt.Println(resv)
 	err := app.queries.CreateReservationForBook(app.ctx, resv)
 	if err != nil {
 		fmt.Println(err)
@@ -320,7 +319,8 @@ func (app *application) postSelectedUser(w http.ResponseWriter, r *http.Request)
 	if err != nil {
 		log.Print(err)
 	}
-	err = ts.Execute(w, nil)
+	books, _ := app.queries.RetrieveReservedBooks(app.ctx, uname)
+	err = ts.Execute(w, books)
 	if err != nil {
 		log.Print(err)
 	}
@@ -405,4 +405,19 @@ func (app *application) postReturnBook(w http.ResponseWriter, r *http.Request) {
 		TransactionType: "return",
 	}
 	app.queries.CreateTransaction(app.ctx, args)
+}
+
+func (app *application) postIssueReservedBook(w http.ResponseWriter, r *http.Request) {
+	title := r.PathValue("Title")
+	rid := r.PathValue("ReservationID")
+	cookie, _ := r.Cookie("selected-user")
+	uname := cookie.Value
+	RID, _ := strconv.ParseInt(rid, 10, 64)
+	args := dbLayer.CreateTransactionParams{
+		Uname:           uname,
+		Title:           title,
+		TransactionType: "issue",
+	}
+	app.queries.CreateTransaction(app.ctx, args)
+	app.queries.UpdateReservationValidity(app.ctx, RID)
 }

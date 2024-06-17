@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -95,7 +94,6 @@ func (app *application) getProfile(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := r.Cookie("uname")
 	uname := cookie.Value
 	books, _ := app.queries.RetrieveReservedBooks(app.ctx, uname)
-	fmt.Print(books)
 	ts, err := template.ParseFiles("./ui/html/main-sections/profile.html")
 	if err != nil {
 		log.Print(err)

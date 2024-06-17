@@ -186,3 +186,8 @@ input[type="radio"] {
 .approve-labels {
     padding: 10px 0;
 }
+
+#reserved-books {
+    padding: 60px;
+    font-size: 2rem;
+}

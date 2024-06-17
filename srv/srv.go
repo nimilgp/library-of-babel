@@ -74,6 +74,7 @@ func main() {
 	mux.HandleFunc("POST /members-list-return", app.postMembersListReturn)
 	mux.HandleFunc("POST /return-books-list/{Uname}", app.postReturnBookList)
 	mux.HandleFunc("POST /return-book/{Title}/{TransactionID}", app.postReturnBook)
+	mux.HandleFunc("POST /issue-reserved/{ReservationID}/{Title}", app.postIssueReservedBook)
 	//action
 	mux.HandleFunc("POST /sign-in", app.postSignIn)
 	mux.HandleFunc("POST /sign-up", app.postSignUp)
