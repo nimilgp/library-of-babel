@@ -169,3 +169,12 @@ INSERT INTO transactions (
 ) VALUES (
 	?, ?, ?
 );
+
+-- name: RetrieveReturnableBooksOfUser :many
+SELECT * FROM transactions
+WHERE validity = 'valid' AND transaction_type = 'issue' AND uname = ?;
+
+-- name: UpdateTransactionValidity :exec
+UPDATE transactions
+SET validity = 'invalid'
+WHERE transaction_id = ?;

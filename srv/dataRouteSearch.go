@@ -349,9 +349,6 @@ func (app *application) postIssueGeneralBook(w http.ResponseWriter, r *http.Requ
 	cookie, _ := r.Cookie("selected-user")
 	uname := cookie.Value
 	BID, _ := strconv.ParseInt(bid, 10, 64)
-	fmt.Println(uname)
-	fmt.Println(title)
-	fmt.Println(bid)
 	args := dbLayer.CreateTransactionParams{
 		Uname:           uname,
 		Title:           title,
@@ -359,4 +356,53 @@ func (app *application) postIssueGeneralBook(w http.ResponseWriter, r *http.Requ
 	}
 	app.queries.CreateTransaction(app.ctx, args)
 	app.queries.UpdateBookQuantityDecrease(app.ctx, BID)
+}
+
+func (app *application) postMembersListReturn(w http.ResponseWriter, r *http.Request) {
+	uname := r.PostFormValue("uname")
+	members, _ := app.queries.RetrieveMembersToRevokeLike(app.ctx, sql.NullString{String: uname, Valid: true})
+	ts, err := template.ParseFiles("./ui/html/librarian/members-list-return.html")
+	if err != nil {
+		log.Print(err)
+	}
+	err = ts.Execute(w, members)
+	if err != nil {
+		log.Print(err)
+	}
+
+}
+
+func (app *application) postReturnBookList(w http.ResponseWriter, r *http.Request) {
+	uname := r.PathValue("Uname")
+	cookie := http.Cookie{
+		Name:  "selected-user",
+		Value: uname,
+		Path:  "/",
+	}
+	http.SetCookie(w, &cookie)
+	books, _ := app.queries.RetrieveReturnableBooksOfUser(app.ctx, uname)
+	ts, err := template.ParseFiles("./ui/html/librarian/book-list-return.html")
+	if err != nil {
+		log.Print(err)
+	}
+	err = ts.Execute(w, books)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+func (app *application) postReturnBook(w http.ResponseWriter, r *http.Request) {
+	title := r.PathValue("Title")
+	tid := r.PathValue("TransactionID")
+	TID, _ := strconv.ParseInt(tid, 10, 64)
+	cookie, _ := r.Cookie("selected-user")
+	uname := cookie.Value
+	app.queries.UpdateTransactionValidity(app.ctx, TID)
+	app.queries.UpdateBookQuantityIncrease(app.ctx, title)
+	args := dbLayer.CreateTransactionParams{
+		Uname:           uname,
+		Title:           title,
+		TransactionType: "return",
+	}
+	app.queries.CreateTransaction(app.ctx, args)
 }

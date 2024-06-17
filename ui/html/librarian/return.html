@@ -1,6 +1,13 @@
 <main class="section-content">
     <section class="section-intro">
         <h1>Return Books</h1>
+        <div class="search-container">
+            <h2>Select User</h2>
+            <form hx-post="/members-list-return" hx-target=".section-body" hx-swap="innerHTML">
+              <input type="text" name="uname" placeholder="Username..">
+              <button type="submit">Search</button>
+            </form>
+        </div>
     </section>
     <section class="section-body">
 

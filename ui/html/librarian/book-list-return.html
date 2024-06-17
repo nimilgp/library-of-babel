@@ -1,0 +1,25 @@
+<main class="section-content">
+    <section class="section-intro">
+        <h1>Return Books</h1>
+    </section>
+    <section class="section-body">
+        {{if .}}
+        <ul class="list-items">
+            {{ range .}}
+                <li id="list-books-{{.TransactionID}}">
+                    <div>
+                        <h1>{{.Title}}</h1>
+                    </div>
+                    <div class="approve-labels">
+                        <label hx-post="/return-book/{{.Title}}/{{.TransactionID}}" hx-target="#list-books-{{.TransactionID}}" hx-swap="outerHTML">Return</label>
+                    </div>
+                </li>
+            {{end}}
+        </ul>
+        {{else}}
+            <section class="red-zone">
+                <h1>No Books To Return</h1>
+            </section>
+        {{end}}
+    </section>
+</main>

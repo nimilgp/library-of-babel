@@ -668,6 +668,41 @@ func (q *Queries) RetrieveReservedBooks(ctx context.Context, uname string) ([]Re
 	return items, nil
 }
 
+const retrieveReturnableBooksOfUser = `-- name: RetrieveReturnableBooksOfUser :many
+SELECT transaction_id, uname, title, transaction_type, sqltime, validity FROM transactions
+WHERE validity = 'valid' AND transaction_type = 'issue' AND uname = ?
+`
+
+func (q *Queries) RetrieveReturnableBooksOfUser(ctx context.Context, uname string) ([]Transaction, error) {
+	rows, err := q.db.QueryContext(ctx, retrieveReturnableBooksOfUser, uname)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Transaction
+	for rows.Next() {
+		var i Transaction
+		if err := rows.Scan(
+			&i.TransactionID,
+			&i.Uname,
+			&i.Title,
+			&i.TransactionType,
+			&i.Sqltime,
+			&i.Validity,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const retrieveUserByUName = `-- name: RetrieveUserByUName :one
 SELECT user_id, uname, passwd_hash, email, first_name, last_name, user_type, actions_left, sqltime, validity FROM users
 WHERE uname = ? AND validity = 'valid'
@@ -801,6 +836,17 @@ WHERE reservation_id = ?
 
 func (q *Queries) UpdateReservationValidity(ctx context.Context, reservationID int64) error {
 	_, err := q.db.ExecContext(ctx, updateReservationValidity, reservationID)
+	return err
+}
+
+const updateTransactionValidity = `-- name: UpdateTransactionValidity :exec
+UPDATE transactions
+SET validity = 'invalid'
+WHERE transaction_id = ?
+`
+
+func (q *Queries) UpdateTransactionValidity(ctx context.Context, transactionID int64) error {
+	_, err := q.db.ExecContext(ctx, updateTransactionValidity, transactionID)
 	return err
 }
 
