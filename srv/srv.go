@@ -69,6 +69,8 @@ func main() {
 	mux.HandleFunc("POST /revoke-list", app.postRevokeList)
 	mux.HandleFunc("POST /members-list", app.postMembersList)
 	mux.HandleFunc("POST /selected-user/{Uname}", app.postSelectedUser)
+	mux.HandleFunc("POST /books-list", app.postAvailibleBooksList)
+	mux.HandleFunc("POST /issue-general/{Title}/{BookID}", app.postIssueGeneralBook)
 	//action
 	mux.HandleFunc("POST /sign-in", app.postSignIn)
 	mux.HandleFunc("POST /sign-up", app.postSignUp)

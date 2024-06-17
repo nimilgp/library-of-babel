@@ -6,7 +6,7 @@
                 <div>Full Name: {{.FirstName}} {{.LastName}}</div>
             </div>
             <div class="approve-labels">
-                <label hx-post="/selected-user/{{.Uname}}" hx-target=".section-body" hx-swap="innerHTML">Select</label>
+                <label hx-post="/selected-user/{{.Uname}}" hx-target="main" hx-swap="outerHTML">Select</label>
             </div>
         </li>
     {{end}}

@@ -201,6 +201,46 @@ func (q *Queries) RetrieveAllBooks(ctx context.Context) ([]Book, error) {
 	return items, nil
 }
 
+const retrieveAvailibleBooks = `-- name: RetrieveAvailibleBooks :many
+SELECT book_id, title, author, year, genre, isbn, rating, readers, quantity, sqltime, validity FROM books
+WHERE quantity > 0 AND validity = 'valid' AND title LIKE '%'|| ? || '%'
+`
+
+func (q *Queries) RetrieveAvailibleBooks(ctx context.Context, dollar_1 sql.NullString) ([]Book, error) {
+	rows, err := q.db.QueryContext(ctx, retrieveAvailibleBooks, dollar_1)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Book
+	for rows.Next() {
+		var i Book
+		if err := rows.Scan(
+			&i.BookID,
+			&i.Title,
+			&i.Author,
+			&i.Year,
+			&i.Genre,
+			&i.Isbn,
+			&i.Rating,
+			&i.Readers,
+			&i.Quantity,
+			&i.Sqltime,
+			&i.Validity,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const retrieveBookByBID = `-- name: RetrieveBookByBID :one
 SELECT book_id, title, author, year, genre, isbn, rating, readers, quantity, sqltime, validity FROM books
 WHERE book_id = ?

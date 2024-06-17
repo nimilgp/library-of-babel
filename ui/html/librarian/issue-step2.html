@@ -2,9 +2,9 @@
     <section class="section-intro">
         <h1>Issue Books</h1>
         <div class="search-container">
-            <h2>Select User</h2>
-            <form hx-post="/members-list" hx-target=".section-body" hx-swap="innerHTML">
-              <input type="text" name="uname" placeholder="Username..">
+            <h2>Select Book</h2>
+            <form hx-post="/books-list" hx-target=".section-body" hx-swap="innerHTML">
+              <input type="text" name="title" placeholder="Title..">
               <button type="submit">Search</button>
             </form>
         </div>

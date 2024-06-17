@@ -316,4 +316,36 @@ func (app *application) postSelectedUser(w http.ResponseWriter, r *http.Request)
 		Path:  "/",
 	}
 	http.SetCookie(w, &cookie)
+	ts, err := template.ParseFiles("./ui/html/librarian/issue-step2.html")
+	if err != nil {
+		log.Print(err)
+	}
+	err = ts.Execute(w, nil)
+	if err != nil {
+		log.Print(err)
+	}
+
+}
+
+func (app *application) postAvailibleBooksList(w http.ResponseWriter, r *http.Request) {
+	title := r.PostFormValue("title")
+	books, err := app.queries.RetrieveAvailibleBooks(app.ctx, sql.NullString{String: title, Valid: true})
+	if err != nil {
+		fmt.Println(err)
+	}
+	ts, err := template.ParseFiles("./ui/html/librarian/book-list.html")
+	if err != nil {
+		log.Print(err)
+	}
+	err = ts.Execute(w, books)
+	if err != nil {
+		log.Print(err)
+	}
+}
+
+func (app *application) postIssueGeneralBook(w http.ResponseWriter, r *http.Request) {
+	title := r.PathValue("Title")
+	bid := r.PathValue("BookID")
+	fmt.Println(title)
+	fmt.Println(bid)
 }
