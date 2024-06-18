@@ -26,7 +26,7 @@ func main() {
 	flag.StringVar(&cfg.ipAdmin, "a", "admin", "Name of admin")
 	flag.StringVar(&cfg.ipPasswd, "p", "passwd", "Passwd of admin")
 	flag.Parse()
-	cfg.dbName = "temp.db" /////db name/////
+	cfg.dbName = "babel.db" /////db name/////
 
 	if !cfg.isCreate {
 		if _, err := os.Stat(cfg.dbName); err != nil {
