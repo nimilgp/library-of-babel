@@ -7,7 +7,7 @@
                     <div>Full Name: {{.FirstName}} {{.LastName}}</div>
                 </div>
                 <div class="approve-labels">
-                    <label hx-post="/revoke/{{.UserID}}" hx-target="#list-users-{{.UserID}}" hx-swap="outerHTML">Revoke</label>
+                    <label hx-post="/revoke/{{.UserID}}" hx-target="#list-users-{{.UserID}} .approve-labels" hx-swap="outerHTML">Revoke</label>
                 </div>
             </li>
         {{end}}

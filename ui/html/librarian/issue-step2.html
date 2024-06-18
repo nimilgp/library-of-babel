@@ -19,7 +19,7 @@
                         <div>By {{ .Author}}</div>
                     </div>
                     <div class="cancel-reservation">
-                        <label hx-post="/issue-reserved/{{.ReservationID}}/{{.Title}}" hx-target="#list-item-{{.ReservationID}}" hx-swap="outerHTML">Issue</label>
+                        <label hx-post="/issue-reserved/{{.ReservationID}}/{{.Title}}" hx-target="#list-item-{{.ReservationID}} .cancel-reservation" hx-swap="outerHTML">Issue</label>
                     </div>
                 </li>
             {{end}}
